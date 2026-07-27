@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
+from agent.data.semantic_layer import format_metrics, format_schema
+
 
 def run(state: dict) -> dict:
-    """Stub — no context retrieval yet. Real implementation in Step 2."""
-    return {}
+    """Load schema and metrics into state for downstream nodes."""
+    return {
+        "schema_slice": format_schema(),
+        "metric_defs": format_metrics(),
+        "retrieved_trios": [],
+    }

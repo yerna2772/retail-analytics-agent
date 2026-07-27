@@ -17,12 +17,17 @@ async def _chat_loop(fake: bool) -> None:
     from langchain_core.messages import HumanMessage
     from langgraph.checkpoint.memory import MemorySaver
 
+    from agent.data.bigquery import FakeBigQuery
     from agent.graph import build_graph
+    from agent.llm.gateway import get_gateway
 
     checkpointer = MemorySaver()
     graph = build_graph(checkpointer)
     thread_id = uuid.uuid4().hex[:12]
     mode = "FakeLLM (demo)" if fake else "Live"
+
+    llm = get_gateway(fake=fake)
+    bq = FakeBigQuery()
 
     console.print(
         Panel(
@@ -33,7 +38,7 @@ async def _chat_loop(fake: bool) -> None:
         )
     )
 
-    config = {"configurable": {"thread_id": thread_id}}
+    config = {"configurable": {"thread_id": thread_id, "llm": llm, "bq": bq}}
 
     while True:
         try:

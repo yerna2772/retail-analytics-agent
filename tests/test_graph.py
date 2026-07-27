@@ -2,7 +2,19 @@ import pytest
 from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 
+from agent.data.bigquery import FakeBigQuery
 from agent.graph import build_graph
+from agent.llm.gateway import FakeLLM
+
+
+def _config(thread_id: str, llm=None, bq=None):
+    return {
+        "configurable": {
+            "thread_id": thread_id,
+            "llm": llm or FakeLLM(),
+            "bq": bq or FakeBigQuery(),
+        }
+    }
 
 
 @pytest.mark.asyncio
@@ -13,7 +25,7 @@ async def test_graph_compiles_and_round_trips():
 
     result = await graph.ainvoke(
         {"messages": [HumanMessage(content="What data do you have?")]},
-        config={"configurable": {"thread_id": "test-001"}},
+        config=_config("test-001"),
     )
 
     assert "final_answer" in result
@@ -26,7 +38,7 @@ async def test_graph_multi_turn():
     """Multiple turns in the same thread accumulate messages."""
     checkpointer = MemorySaver()
     graph = build_graph(checkpointer)
-    config = {"configurable": {"thread_id": "test-002"}}
+    config = _config("test-002")
 
     r1 = await graph.ainvoke(
         {"messages": [HumanMessage(content="Hello")]},
@@ -50,7 +62,7 @@ async def test_guardrail_out_scrubs_pii():
 
     result = await graph.ainvoke(
         {"messages": [HumanMessage(content="test")]},
-        config={"configurable": {"thread_id": "test-003"}},
+        config=_config("test-003"),
     )
 
     assert "final_answer" in result

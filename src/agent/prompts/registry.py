@@ -13,10 +13,9 @@ _PROMPTS_DIR = Path(__file__).parents[3] / "prompts"
 _cache: dict[str, dict[str, Any]] = {}
 
 
-def load_prompt(name: str) -> str:
-    """Load a prompt template from prompts/{name}.yaml and return the template string."""
+def _load(name: str) -> dict[str, Any]:
     if name in _cache:
-        return _cache[name]["template"]
+        return _cache[name]
 
     path = _PROMPTS_DIR / f"{name}.yaml"
     if not path.exists():
@@ -28,22 +27,31 @@ def load_prompt(name: str) -> str:
     except yaml.YAMLError as exc:
         if name in _cache:
             logger.error("Bad YAML in %s, serving last-known-good: %s", path, exc)
-            return _cache[name]["template"]
+            return _cache[name]
         raise
 
     _cache[name] = data
-    return data["template"]
+    return data
+
+
+def load_prompt(name: str) -> str:
+    """Load a prompt template string from prompts/{name}.yaml."""
+    return _load(name)["template"]
+
+
+def render_prompt(name: str, **kwargs: str) -> str:
+    """Load prompt and substitute {key} placeholders."""
+    template = load_prompt(name)
+    for key, value in kwargs.items():
+        template = template.replace(f"{{{key}}}", str(value))
+    return template
 
 
 def get_prompt_version(name: str) -> str:
-    """Return the version string for a loaded prompt, or 'unknown'."""
-    if name not in _cache:
-        load_prompt(name)
-    return _cache.get(name, {}).get("version", "unknown")
+    return _load(name).get("version", "unknown")
 
 
 def invalidate(name: str | None = None) -> None:
-    """Clear cache for one prompt or all prompts."""
     if name:
         _cache.pop(name, None)
     else:

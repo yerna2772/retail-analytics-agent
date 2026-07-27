@@ -1,0 +1,26 @@
+revenue:
+  sql: "SUM(oi.sale_price)"
+  filter: "oi.status NOT IN ('Cancelled', 'Returned')"
+  note: >
+    The single most consequential definition. Omitting the filter inflates
+    every revenue figure the agent reports, and dry_run cannot catch it.
+
+aov:
+  sql: "SUM(oi.sale_price) / COUNT(DISTINCT oi.order_id)"
+  filter: "oi.status NOT IN ('Cancelled', 'Returned')"
+  note: "Divides total revenue by distinct order count, not by order_items rows."
+
+return_rate:
+  sql: "COUNTIF(oi.status = 'Returned') / COUNT(*)"
+  filter: ""
+  note: "Denominator is all items, not just returned items."
+
+active_users:
+  sql: "COUNT(DISTINCT oi.user_id)"
+  filter: "oi.status NOT IN ('Cancelled', 'Returned')"
+  note: "Users with at least one completed order in the period."
+
+churn:
+  sql: "Users active in period A but absent in period B"
+  filter: ""
+  note: "Requires window functions comparing consecutive periods."
