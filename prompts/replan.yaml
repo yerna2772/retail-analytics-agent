@@ -1,0 +1,18 @@
+name: replan
+description: Decide whether intermediate results need follow-up queries
+version: "1.0"
+owner: dev
+template: |
+  You are a data analyst reviewing intermediate query results.
+
+  Original question: {question}
+
+  Results so far:
+  {results}
+
+  Based on these results, do you need additional queries to fully answer the original question? For causal questions, you may need to drill into specific dimensions (category, time period, segment) to identify the driver.
+
+  Respond with ONLY a JSON object:
+  {"needs_more": true/false, "steps": [{"index": N, "question": "...", "depends_on": []}], "reason": "..."}
+
+  If needs_more is false, return an empty steps array. Steps should be concrete, queryable sub-questions. Maximum 2 additional steps.

@@ -41,6 +41,10 @@ class FakeBigQuery:
     async def execute(self, sql: str) -> dict[str, Any]:
         sql_lower = sql.lower()
 
+        if "avg" in sql_lower and "spend" in sql_lower:
+            return self._avg_spend_by_state(sql_lower)
+        if "category" in sql_lower and "state" in sql_lower:
+            return self._category_by_state(sql_lower)
         if "date_trunc" in sql_lower and "revenue" in sql_lower:
             return self._revenue_by_month(sql_lower)
         if "user_id" in sql_lower and "total_spend" in sql_lower:
@@ -51,6 +55,62 @@ class FakeBigQuery:
             return self._order_status_counts()
 
         return self._generic_count()
+
+    def _avg_spend_by_state(self, sql_lower: str) -> dict[str, Any]:
+        items = self._tables.get("order_items", [])
+        users = {u["id"]: u for u in self._tables.get("users", [])}
+        state_filter = None
+        for s in ["texas", "california", "new york", "florida"]:
+            if s in sql_lower:
+                state_filter = s
+                break
+
+        total, count = 0.0, 0
+        for row in items:
+            if row.get("status") in ("Cancelled", "Returned"):
+                continue
+            uid = row.get("user_id", "")
+            user = users.get(uid, {})
+            if state_filter and user.get("state", "").lower() != state_filter:
+                continue
+            total += float(row.get("sale_price", 0))
+            count += 1
+
+        avg = round(total / count, 2) if count else 0
+        return {
+            "columns": ["avg_spend"],
+            "rows": [{"avg_spend": avg}],
+            "row_count": 1,
+            "bytes_scanned": 1024,
+        }
+
+    def _category_by_state(self, sql_lower: str) -> dict[str, Any]:
+        items = self._tables.get("order_items", [])
+        users = {u["id"]: u for u in self._tables.get("users", [])}
+        products = {p["id"]: p for p in self._tables.get("products", [])}
+
+        data: dict[tuple[str, str], float] = {}
+        for row in items:
+            if row.get("status") in ("Cancelled", "Returned"):
+                continue
+            uid = row.get("user_id", "")
+            user = users.get(uid, {})
+            state = user.get("state", "Unknown")
+            pid = row.get("product_id", "")
+            cat = products.get(pid, {}).get("category", "Unknown")
+            key = (cat, state)
+            data[key] = data.get(key, 0) + float(row.get("sale_price", 0))
+
+        rows = [
+            {"category": k[0], "state": k[1], "revenue": round(v, 2)}
+            for k, v in sorted(data.items(), key=lambda x: x[1], reverse=True)
+        ]
+        return {
+            "columns": ["category", "state", "revenue"],
+            "rows": rows,
+            "row_count": len(rows),
+            "bytes_scanned": 1024,
+        }
 
     def _revenue_by_month(self, sql_lower: str) -> dict[str, Any]:
         items = self._tables.get("order_items", [])

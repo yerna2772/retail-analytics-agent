@@ -24,14 +24,14 @@ class LLMGateway(Protocol):
 
 
 def extract_json(text: str) -> str:
-    """Pull a JSON object out of an LLM response that may have surrounding text."""
+    """Pull a JSON object or array out of an LLM response."""
     text = text.strip()
-    if text.startswith("{"):
+    if text.startswith("{") or text.startswith("["):
         return text
     m = re.search(r"```(?:json)?\s*\n(.*?)\n```", text, re.DOTALL)
     if m:
         return m.group(1).strip()
-    m = re.search(r"\{.*\}", text, re.DOTALL)
+    m = re.search(r"[\[{].*[\]}]", text, re.DOTALL)
     if m:
         return m.group(0)
     return text
@@ -142,10 +142,14 @@ class FakeLLM:
         combined = (system + " " + prompt).lower()
         if "intent" in combined and ("classif" in combined or "triage" in combined):
             return self._fake_triage(prompt)
+        if "break this into" in combined and "sql steps" in combined:
+            return self._fake_plan(prompt)
         if "sql" in combined and (
             "generate" in combined or "expert" in combined or "query" in combined
         ):
             return self._fake_sql(prompt)
+        if "needs_more" in combined or "need additional queries" in combined:
+            return self._fake_replan(prompt)
         if "analyst" in combined or "findings" in combined or "interpret" in combined:
             return self._fake_analysis(prompt)
         return f"[FakeLLM] Echo: {prompt[:200]}"
@@ -194,8 +198,119 @@ class FakeLLM:
             }
         )
 
+    def _fake_plan(self, prompt: str) -> str:
+        p = prompt.lower()
+        if "why" in p and "vs" in p or ("why" in p and "compared" in p):
+            states = []
+            for s in [
+                "texas",
+                "california",
+                "new york",
+                "florida",
+            ]:
+                if s in p:
+                    states.append(s.title())
+            if len(states) < 2:
+                states = ["Texas", "California"]
+            return json.dumps(
+                [
+                    {
+                        "index": 0,
+                        "question": (f"Average spend per user in {states[0]}"),
+                        "depends_on": [],
+                    },
+                    {
+                        "index": 1,
+                        "question": (f"Average spend per user in {states[1]}"),
+                        "depends_on": [],
+                    },
+                    {
+                        "index": 2,
+                        "question": (f"Category breakdown of spend in {states[0]} vs {states[1]}"),
+                        "depends_on": [0, 1],
+                    },
+                ]
+            )
+        if "why" in p and ("spike" in p or "increase" in p or "change" in p):
+            return json.dumps(
+                [
+                    {
+                        "index": 0,
+                        "question": "Monthly trend of the metric",
+                        "depends_on": [],
+                    },
+                    {
+                        "index": 1,
+                        "question": "Breakdown by category for peak period",
+                        "depends_on": [0],
+                    },
+                ]
+            )
+        return json.dumps(
+            [
+                {
+                    "index": 0,
+                    "question": prompt.split("Question:")[-1].strip()
+                    if "Question:" in prompt
+                    else prompt[-200:],
+                    "depends_on": [],
+                }
+            ]
+        )
+
+    def _fake_replan(self, prompt: str) -> str:
+        p = prompt.lower()
+        if "category" not in p and ("vs" in p or "compared" in p or "why" in p):
+            return json.dumps(
+                {
+                    "needs_more": True,
+                    "steps": [
+                        {
+                            "index": 99,
+                            "question": "Category breakdown of spend",
+                            "depends_on": [],
+                        }
+                    ],
+                    "reason": "Need category detail to identify driver",
+                }
+            )
+        return json.dumps(
+            {
+                "needs_more": False,
+                "steps": [],
+                "reason": "Sufficient data to answer",
+            }
+        )
+
     def _fake_sql(self, prompt: str) -> str:
         p = prompt.lower()
+        if "average spend" in p and "texas" in p:
+            return (
+                "SELECT AVG(oi.sale_price) AS avg_spend "
+                "FROM order_items oi "
+                "JOIN users u ON oi.user_id = u.id "
+                "WHERE u.state = 'Texas' "
+                "AND oi.status NOT IN ('Cancelled', 'Returned') LIMIT 1"
+            )
+        if "average spend" in p and "california" in p:
+            return (
+                "SELECT AVG(oi.sale_price) AS avg_spend "
+                "FROM order_items oi "
+                "JOIN users u ON oi.user_id = u.id "
+                "WHERE u.state = 'California' "
+                "AND oi.status NOT IN ('Cancelled', 'Returned') LIMIT 1"
+            )
+        if "category" in p and "breakdown" in p:
+            return (
+                "SELECT p.category, u.state, "
+                "SUM(oi.sale_price) AS revenue "
+                "FROM order_items oi "
+                "JOIN users u ON oi.user_id = u.id "
+                "JOIN products p ON oi.product_id = p.id "
+                "WHERE oi.status NOT IN ('Cancelled', 'Returned') "
+                "GROUP BY p.category, u.state "
+                "ORDER BY revenue DESC LIMIT 20"
+            )
         if "revenue" in p and "month" in p:
             return (
                 "SELECT DATE_TRUNC(oi.created_at, MONTH) AS month, "

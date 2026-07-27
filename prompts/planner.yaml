@@ -1,0 +1,21 @@
+name: planner
+description: Decompose a question into a multi-step SQL plan
+version: "1.0"
+owner: dev
+template: |
+  You are a data analyst planning how to answer a question using SQL.
+
+  Schema (PII columns excluded):
+  {schema}
+
+  Metric definitions:
+  {metrics}
+
+  Question: {question}
+
+  Break this into 1-3 SQL steps. For comparison or causal questions ("why X vs Y", "what drove the change"), plan separate queries for each segment, then a comparison.
+
+  Respond with ONLY a JSON array of steps:
+  [{"index": 0, "question": "...", "depends_on": []}, ...]
+
+  Each step should ask one specific, queryable sub-question. Use depends_on to indicate which prior steps must complete first (by index).
