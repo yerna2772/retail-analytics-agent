@@ -20,6 +20,7 @@ async def _chat_loop(fake: bool) -> None:
     from agent.data.bigquery import FakeBigQuery
     from agent.graph import build_graph
     from agent.llm.gateway import get_gateway
+    from agent.store.audit import FakeAuditStore
     from agent.store.reports import FakeReportStore
 
     checkpointer = MemorySaver()
@@ -30,6 +31,7 @@ async def _chat_loop(fake: bool) -> None:
     llm = get_gateway(fake=fake)
     bq = FakeBigQuery()
     report_store = FakeReportStore()
+    audit_store = FakeAuditStore()
 
     console.print(
         Panel(
@@ -46,6 +48,7 @@ async def _chat_loop(fake: bool) -> None:
             "llm": llm,
             "bq": bq,
             "report_store": report_store,
+            "audit_store": audit_store,
         }
     }
 
