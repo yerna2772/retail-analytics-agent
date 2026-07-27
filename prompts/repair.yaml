@@ -1,0 +1,17 @@
+name: repair
+description: Fix SQL based on the exact error from dry_run or validator
+version: "1.0"
+owner: dev
+template: |
+  The following SQL query failed validation or dry_run.
+
+  Original SQL:
+  {sql}
+
+  Error:
+  {error}
+
+  Schema (PII columns excluded):
+  {schema}
+
+  Fix the query and respond with ONLY the corrected SQL. No explanation.

@@ -33,6 +33,21 @@ def _prior_results_context(state: dict, step) -> str:
     return "\nPrior results:\n" + "\n".join(lines) + "\n"
 
 
+def _repair_context(state: dict, current_step: int) -> str:
+    """Include the last failed attempt's error so the LLM can fix it."""
+    attempts = state.get("sql_attempts", [])
+    failed = [
+        a
+        for a in attempts
+        if a.step_index == current_step and not a.validator_verdict.startswith("pass")
+    ]
+    if not failed:
+        return ""
+    last = failed[-1]
+    error = last.dry_run_error or last.validator_verdict
+    return f"\nPrevious attempt failed:\n  SQL: {last.sql}\n  Error: {error}\n"
+
+
 async def run(state: dict, config: RunnableConfig) -> dict:
     llm = config["configurable"]["llm"]
 
@@ -57,12 +72,13 @@ async def run(state: dict, config: RunnableConfig) -> dict:
         examples = "\nExamples:\n" + "\n\n".join(lines) + "\n"
 
     prior_ctx = _prior_results_context(state, step)
+    repair_ctx = _repair_context(state, current)
 
     prompt = render_prompt(
         "sql_generator",
         schema=schema,
         metrics=metrics,
-        examples=examples + prior_ctx,
+        examples=examples + prior_ctx + repair_ctx,
         question=step.question,
     )
 

@@ -1,12 +1,18 @@
-"""Feed dry_run errors back to the generator for a retry, up to the budget cap."""
+"""Feed dry_run/validator errors back to the generator for a retry."""
 
 from __future__ import annotations
 
+import logging
+
 from agent.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 def run(state: dict) -> dict:
-    """Increment repair count. Real error-feedback prompt in Step 6."""
+    """Increment repair count. Error context is already in sql_attempts
+    for sql_generator to reference on the retry.
+    """
     return {"repair_count": state.get("repair_count", 0) + 1}
 
 
