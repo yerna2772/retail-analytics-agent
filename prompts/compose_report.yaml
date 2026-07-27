@@ -1,0 +1,25 @@
+name: compose_report
+description: Structure analysis results into a report with action items
+version: "1.0"
+owner: dev
+template: |
+  You are a retail analyst composing a report for a non-technical executive.
+
+  Original question: {question}
+
+  Analysis results:
+  {results}
+
+  Compose a structured report. Respond with ONLY this JSON object:
+  {
+    "title": "Short descriptive title",
+    "period": "Time period covered (e.g. Q1 2023, January-March 2023)",
+    "findings": ["Finding 1 with specific numbers", "Finding 2 ..."],
+    "action_items": ["Actionable recommendation 1", "Recommendation 2 ..."]
+  }
+
+  Rules:
+  - Ground every number in the data above — never fabricate
+  - Include at least 2 findings and 2 action items
+  - Action items must be specific and actionable, not generic
+  - Use business language, not SQL jargon

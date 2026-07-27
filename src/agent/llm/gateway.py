@@ -144,6 +144,8 @@ class FakeLLM:
             return self._fake_triage(prompt)
         if "break this into" in combined and "sql steps" in combined:
             return self._fake_plan(prompt)
+        if "compose" in combined and "report" in combined:
+            return self._fake_compose_report(prompt)
         if "sql" in combined and (
             "generate" in combined or "expert" in combined or "query" in combined
         ):
@@ -170,9 +172,8 @@ class FakeLLM:
             intent = "metadata"
         elif any(kw in ll for kw in ["delete", "remove"]):
             intent = "report_delete"
-        elif any(
-            kw in ll
-            for kw in ["create a report", "save a report", "turn that into", "generate a report"]
+        elif ("report" in ll and any(kw in ll for kw in ["create", "save", "generate"])) or (
+            "turn that into" in ll
         ):
             intent = "report_create"
         elif any(
@@ -334,6 +335,22 @@ class FakeLLM:
         if "status" in p:
             return "SELECT status, COUNT(*) AS cnt FROM orders GROUP BY status LIMIT 20"
         return "SELECT COUNT(*) AS total FROM orders LIMIT 1"
+
+    def _fake_compose_report(self, prompt: str) -> str:
+        return json.dumps(
+            {
+                "title": "Retail Performance Report",
+                "period": "2023",
+                "findings": [
+                    "Revenue totalled $459.93 across the analysed period",
+                    "Outerwear and Dresses are the highest-revenue categories",
+                ],
+                "action_items": [
+                    "Increase marketing spend on top-performing categories",
+                    "Investigate low conversion in underperforming segments",
+                ],
+            }
+        )
 
     def _fake_analysis(self, prompt: str) -> str:
         return (
