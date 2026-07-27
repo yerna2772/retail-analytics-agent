@@ -1,0 +1,15 @@
+{
+  "id": "trio-category-revenue",
+  "question_variants": [
+    "Revenue by category",
+    "Which categories sell the most?",
+    "Top product categories by revenue",
+    "Category performance"
+  ],
+  "sql": "SELECT p.category, SUM(oi.sale_price) AS revenue FROM products p JOIN order_items oi ON p.id = oi.product_id WHERE oi.status NOT IN ('Cancelled', 'Returned') GROUP BY p.category ORDER BY revenue DESC LIMIT 20",
+  "report": "Revenue by product category, showing which categories drive the most sales.",
+  "tables_used": ["products", "order_items"],
+  "metrics_used": ["revenue"],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}

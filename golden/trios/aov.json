@@ -1,0 +1,14 @@
+{
+  "id": "trio-aov",
+  "question_variants": [
+    "What is the average order value?",
+    "AOV by month",
+    "Average order value trend"
+  ],
+  "sql": "SELECT DATE_TRUNC(o.created_at, MONTH) AS month, AVG(oi.sale_price) AS aov FROM orders o JOIN order_items oi ON o.order_id = oi.order_id WHERE o.status NOT IN ('Cancelled', 'Returned') GROUP BY month ORDER BY month LIMIT 36",
+  "report": "Average order value by month, excluding cancelled and returned orders.",
+  "tables_used": ["orders", "order_items"],
+  "metrics_used": ["aov"],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}

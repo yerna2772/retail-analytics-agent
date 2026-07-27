@@ -1,0 +1,15 @@
+{
+  "id": "trio-top-customers",
+  "question_variants": [
+    "Who are the top customers?",
+    "Top spenders",
+    "Highest spending customers",
+    "Which customers spend the most?"
+  ],
+  "sql": "SELECT oi.user_id, SUM(oi.sale_price) AS total_spend FROM order_items oi WHERE oi.status NOT IN ('Cancelled', 'Returned') GROUP BY oi.user_id ORDER BY total_spend DESC LIMIT 10",
+  "report": "Top 10 customers ranked by total spend, excluding cancelled and returned items.",
+  "tables_used": ["order_items"],
+  "metrics_used": ["revenue"],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "trio-state-revenue",
+  "question_variants": [
+    "Revenue by state",
+    "Which states have the highest revenue?",
+    "State-level sales performance",
+    "Geographic revenue breakdown"
+  ],
+  "sql": "SELECT u.state, SUM(oi.sale_price) AS revenue FROM users u JOIN order_items oi ON u.id = oi.user_id WHERE oi.status NOT IN ('Cancelled', 'Returned') GROUP BY u.state ORDER BY revenue DESC LIMIT 20",
+  "report": "Revenue by US state, identifying the highest-performing geographic markets.",
+  "tables_used": ["users", "order_items"],
+  "metrics_used": ["revenue"],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}

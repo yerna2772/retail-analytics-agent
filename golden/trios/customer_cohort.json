@@ -1,0 +1,15 @@
+{
+  "id": "trio-customer-cohort",
+  "question_variants": [
+    "Customer acquisition by month",
+    "New customer cohorts",
+    "How many new customers each month?",
+    "Customer growth trend"
+  ],
+  "sql": "SELECT DATE_TRUNC(u.created_at, MONTH) AS cohort_month, COUNT(*) AS new_customers FROM users u GROUP BY cohort_month ORDER BY cohort_month LIMIT 36",
+  "report": "New customer acquisition by month, showing growth trends.",
+  "tables_used": ["users"],
+  "metrics_used": ["active_users"],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}

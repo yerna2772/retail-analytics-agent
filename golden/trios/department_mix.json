@@ -1,0 +1,14 @@
+{
+  "id": "trio-department-mix",
+  "question_variants": [
+    "Revenue split by department",
+    "Men vs Women department sales",
+    "Department performance comparison"
+  ],
+  "sql": "SELECT p.department, SUM(oi.sale_price) AS revenue FROM products p JOIN order_items oi ON p.id = oi.product_id WHERE oi.status NOT IN ('Cancelled', 'Returned') GROUP BY p.department ORDER BY revenue DESC LIMIT 10",
+  "report": "Revenue breakdown by department (Men, Women), showing the department mix.",
+  "tables_used": ["products", "order_items"],
+  "metrics_used": ["revenue"],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}

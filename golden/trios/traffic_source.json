@@ -1,0 +1,15 @@
+{
+  "id": "trio-traffic-source",
+  "question_variants": [
+    "Which traffic sources bring the most customers?",
+    "Customer acquisition channels",
+    "Traffic source breakdown",
+    "Where do our customers come from?"
+  ],
+  "sql": "SELECT u.traffic_source, COUNT(*) AS customer_count FROM users u GROUP BY u.traffic_source ORDER BY customer_count DESC LIMIT 10",
+  "report": "Customer count by traffic source, showing which channels drive the most acquisition.",
+  "tables_used": ["users"],
+  "metrics_used": [],
+  "quality_score": 1.0,
+  "provenance": "authored"
+}
