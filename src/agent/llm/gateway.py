@@ -146,14 +146,14 @@ class FakeLLM:
             return self._fake_plan(prompt)
         if "compose" in combined and "report" in combined:
             return self._fake_compose_report(prompt)
+        if "needs_more" in combined or "need additional queries" in combined:
+            return self._fake_replan(prompt)
+        if "presenting findings" in combined or "interpret" in combined:
+            return self._fake_analysis(prompt)
         if "sql" in combined and (
             "generate" in combined or "expert" in combined or "query" in combined
         ):
             return self._fake_sql(prompt)
-        if "needs_more" in combined or "need additional queries" in combined:
-            return self._fake_replan(prompt)
-        if "analyst" in combined or "findings" in combined or "interpret" in combined:
-            return self._fake_analysis(prompt)
         return f"[FakeLLM] Echo: {prompt[:200]}"
 
     def _fake_triage(self, prompt: str) -> str:
@@ -201,7 +201,8 @@ class FakeLLM:
 
     def _fake_plan(self, prompt: str) -> str:
         p = prompt.lower()
-        if "why" in p and "vs" in p or ("why" in p and "compared" in p):
+        q = p.split("question:")[-1].split("\n")[0] if "question:" in p else p
+        if ("why" in q and "vs" in q) or ("why" in q and "compared" in q):
             states = []
             for s in [
                 "texas",
@@ -232,7 +233,7 @@ class FakeLLM:
                     },
                 ]
             )
-        if "why" in p and ("spike" in p or "increase" in p or "change" in p):
+        if "why" in q and ("spike" in q or "increase" in q or "change" in q):
             return json.dumps(
                 [
                     {
@@ -247,13 +248,15 @@ class FakeLLM:
                     },
                 ]
             )
+        if "Question:" in prompt:
+            question_text = prompt.split("Question:")[-1].strip().split("\n")[0]
+        else:
+            question_text = prompt[-200:]
         return json.dumps(
             [
                 {
                     "index": 0,
-                    "question": prompt.split("Question:")[-1].strip()
-                    if "Question:" in prompt
-                    else prompt[-200:],
+                    "question": question_text,
                     "depends_on": [],
                 }
             ]
