@@ -1,0 +1,63 @@
+[project]
+name = "retail-analytics-agent"
+version = "0.1.0"
+description = "Natural-language → BigQuery → analyst-quality reports for retail executives"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.4,<1",
+    "langchain-core>=0.3,<1",
+    "langchain-google-genai>=2,<3",
+    "google-cloud-bigquery>=3,<4",
+    "sqlglot>=26,<27",
+    "pydantic>=2,<3",
+    "pydantic-settings>=2,<3",
+    "typer>=0.15,<1",
+    "rich>=13,<14",
+    "httpx>=0.28,<1",
+    "psycopg[binary]>=3,<4",
+    "redis>=5,<6",
+    "langfuse>=2,<3",
+    "pgvector>=0.3,<1",
+    "pyyaml>=6,<7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<9",
+    "pytest-asyncio>=0.24,<1",
+    "mypy>=1.11,<2",
+    "ruff>=0.8,<1",
+    "coverage>=7,<8",
+]
+
+[project.scripts]
+agent = "agent.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 99
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["langfuse.*", "langgraph.*", "langchain_core.*", "langchain_google_genai.*", "google.cloud.*", "sqlglot.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: hits real services (deselect with -m 'not integration')"]
+asyncio_mode = "auto"

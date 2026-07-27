@@ -1,0 +1,6 @@
+id,cost,category,name,brand,retail_price,department,sku,distribution_center_id
+1,25.00,Jeans,Slim Fit Jeans,Levi's,59.99,Men,LEV-001,1
+2,12.00,Tops,Cotton T-Shirt,Calvin Klein,29.99,Men,CK-001,1
+3,40.00,Outerwear,Down Jacket,The North Face,89.99,Men,TNF-001,2
+4,60.00,Dresses,Evening Dress,Calvin Klein,149.99,Women,CK-002,1
+5,15.00,Accessories,Canvas Belt,Levi's,39.99,Men,LEV-002,2
