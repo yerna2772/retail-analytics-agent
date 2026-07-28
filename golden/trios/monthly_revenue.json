@@ -1,0 +1,20 @@
+{
+  "id": "monthly_revenue",
+  "metrics_used": [
+    "revenue"
+  ],
+  "tables_used": [
+    "order_items"
+  ],
+  "question_variants": [
+    "monthly revenue",
+    "revenue by month",
+    "how did revenue trend over the year",
+    "show me sales per month"
+  ],
+  "sql": "SELECT FORMAT_TIMESTAMP('%Y-%m', oi.created_at) AS month,\n  ROUND(SUM(oi.sale_price), 2) AS revenue,\n  COUNT(DISTINCT oi.order_id) AS orders\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nWHERE oi.status NOT IN ('Cancelled', 'Returned') AND EXTRACT(YEAR FROM oi.created_at) = 2023\nGROUP BY month ORDER BY month",
+  "report": "Revenue is reported net of cancelled and returned items. Order count is included alongside revenue because a revenue change is only interpretable once you know whether order volume or basket size moved.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

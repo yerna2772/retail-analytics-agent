@@ -1,0 +1,20 @@
+{
+  "id": "product_margin",
+  "metrics_used": [
+    "revenue"
+  ],
+  "tables_used": [
+    "order_items",
+    "products"
+  ],
+  "question_variants": [
+    "which products are most profitable",
+    "margin by product",
+    "best products by profit not revenue"
+  ],
+  "sql": "SELECT p.id AS product_id, p.name, p.brand, p.category,\n  COUNT(*) AS units,\n  ROUND(SUM(oi.sale_price), 2) AS revenue,\n  ROUND(SUM(oi.sale_price - p.cost), 2) AS gross_profit\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nJOIN `bigquery-public-data.thelook_ecommerce.products` AS p ON p.id = oi.product_id\nWHERE oi.status NOT IN ('Cancelled', 'Returned')\nGROUP BY p.id, p.name, p.brand, p.category\nORDER BY gross_profit DESC LIMIT 20",
+  "report": "Ranking on revenue alone promotes high-price low-margin products. Gross profit uses products.cost, which is the only cost field available and is per unit.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

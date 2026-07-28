@@ -39,7 +39,8 @@ def _repair_context(state: dict, current_step: int) -> str:
     failed = [
         a
         for a in attempts
-        if a.step_index == current_step and not a.validator_verdict.startswith("pass")
+        if a.step_index == current_step
+        and (not a.validator_verdict.startswith("pass") or a.dry_run_error)
     ]
     if not failed:
         return ""

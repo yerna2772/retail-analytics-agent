@@ -28,14 +28,31 @@ def _format_results(results: list) -> str:
     return "\n".join(lines)
 
 
+def _fallback_answer(results: list) -> str:
+    """Format raw query results when the LLM budget is exhausted."""
+    lines = ["Here are the results:\n"]
+    for qr in results:
+        if qr.rows:
+            cols = list(qr.rows[0].keys())
+            lines.append(" | ".join(cols))
+            lines.append("-" * (len(" | ".join(cols))))
+            for row in qr.rows[:20]:
+                lines.append(" | ".join(str(row.get(c, "")) for c in cols))
+            if qr.row_count > 20:
+                lines.append(f"... and {qr.row_count - 20} more rows")
+        lines.append("")
+    return "\n".join(lines)
+
+
 async def run(state: dict, config: RunnableConfig) -> dict:
     llm = config["configurable"]["llm"]
-
-    if state.get("llm_call_count", 0) >= settings.max_llm_calls:
-        return {"final_answer": "Budget exhausted before analysis could complete."}
-
     results = state.get("query_results", [])
     question = state.get("standalone_question", "")
+
+    if state.get("llm_call_count", 0) >= settings.max_llm_calls:
+        if results:
+            return {"final_answer": _fallback_answer(results)}
+        return {"final_answer": "Budget exhausted before analysis could complete."}
 
     prompt = render_prompt(
         "analyst",

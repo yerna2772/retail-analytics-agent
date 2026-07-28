@@ -1,0 +1,19 @@
+{
+  "id": "repeat_vs_single",
+  "metrics_used": [
+    "revenue"
+  ],
+  "tables_used": [
+    "order_items"
+  ],
+  "question_variants": [
+    "repeat customers versus one time buyers",
+    "how much comes from repeat business",
+    "customer loyalty split"
+  ],
+  "sql": "WITH per_user AS (\n  SELECT oi.user_id,\n    COUNT(DISTINCT oi.order_id) AS orders,\n    SUM(oi.sale_price) AS spend\n  FROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\n  WHERE oi.status NOT IN ('Cancelled', 'Returned')\n  GROUP BY oi.user_id)\nSELECT CASE WHEN orders = 1 THEN 'single-order' ELSE 'repeat' END AS segment,\n  COUNT(*) AS buyers,\n  ROUND(SUM(spend), 2) AS revenue,\n  ROUND(AVG(spend), 2) AS avg_spend\nFROM per_user GROUP BY segment ORDER BY revenue DESC",
+  "report": "Uses a CTE to collapse to one row per buyer before segmenting. Segmenting on the raw item table would count a buyer once per item and distort every average.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

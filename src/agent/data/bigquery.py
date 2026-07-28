@@ -5,6 +5,8 @@ import logging
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
+from google.cloud import bigquery as bq_sdk
+
 logger = logging.getLogger(__name__)
 
 FIXTURES_DIR = Path(__file__).parents[3] / "fixtures"
@@ -15,6 +17,55 @@ class BigQueryClient(Protocol):
     async def dry_run(self, sql: str) -> dict[str, Any]: ...
     async def execute(self, sql: str) -> dict[str, Any]: ...
     async def get_table_schema(self, table: str) -> dict[str, str]: ...
+
+
+class RealBigQuery:
+    """Thin async wrapper over the google-cloud-bigquery SDK."""
+
+    def __init__(self, project: str) -> None:
+        self._client = bq_sdk.Client(project=project)
+
+    async def dry_run(self, sql: str) -> dict[str, Any]:
+        job_config = bq_sdk.QueryJobConfig(dry_run=True, use_query_cache=False)
+        try:
+            job = self._client.query(sql, job_config=job_config)
+            return {
+                "ok": True,
+                "estimated_bytes": job.total_bytes_processed or 0,
+                "error": None,
+            }
+        except Exception as exc:
+            raw = str(exc)
+            first_line = raw.split("\n")[0]
+            if "https://" in first_line:
+                idx = first_line.find(": ", first_line.find("https://") + 10)
+                msg = first_line[idx + 2 :] if idx >= 0 else first_line
+            elif ": " in first_line:
+                msg = first_line.split(": ", 1)[-1]
+            else:
+                msg = first_line
+            return {
+                "ok": False,
+                "estimated_bytes": 0,
+                "error": msg.strip(),
+            }
+
+    async def execute(self, sql: str) -> dict[str, Any]:
+        job = self._client.query(sql)
+        result = job.result()
+        columns = [field.name for field in result.schema]
+        rows = [dict(row.items()) for row in result]
+        return {
+            "columns": columns,
+            "rows": rows,
+            "row_count": result.total_rows or len(rows),
+            "bytes_scanned": job.total_bytes_processed or 0,
+        }
+
+    async def get_table_schema(self, table: str) -> dict[str, str]:
+        from agent.safety.ast_rules import TABLE_SCHEMA
+
+        return TABLE_SCHEMA.get(table, {})
 
 
 class FakeBigQuery:

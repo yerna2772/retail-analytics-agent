@@ -17,7 +17,7 @@ def test_retrieves_revenue_trio():
     results = retrieve("What is the monthly revenue?")
     assert len(results) >= 1
     ids = [t.id for t in results]
-    assert "trio-revenue-monthly" in ids
+    assert "monthly_revenue" in ids
 
 
 def test_retrieves_top_customers():
@@ -25,7 +25,7 @@ def test_retrieves_top_customers():
     results = retrieve("Who are the top spenders?")
     assert len(results) >= 1
     ids = [t.id for t in results]
-    assert "trio-top-customers" in ids
+    assert "top_customers" in ids
 
 
 def test_retrieves_category_trio():
@@ -33,7 +33,7 @@ def test_retrieves_category_trio():
     results = retrieve("Revenue by product category")
     assert len(results) >= 1
     ids = [t.id for t in results]
-    assert "trio-category-revenue" in ids
+    assert "category_revenue" in ids
 
 
 def test_top_k_limit():

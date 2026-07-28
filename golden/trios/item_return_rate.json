@@ -1,0 +1,19 @@
+{
+  "id": "item_return_rate",
+  "metrics_used": [
+    "item_return_rate"
+  ],
+  "tables_used": [
+    "order_items"
+  ],
+  "question_variants": [
+    "item return rate",
+    "what share of items get returned",
+    "return rate by category"
+  ],
+  "sql": "SELECT p.category,\n  COUNT(*) AS items_sold,\n  ROUND(100.0 * COUNTIF(oi.status = 'Returned') / COUNT(*), 2) AS item_return_rate_pct\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nJOIN `bigquery-public-data.thelook_ecommerce.products` AS p ON p.id = oi.product_id\nGROUP BY p.category HAVING COUNT(*) >= 50 ORDER BY item_return_rate_pct DESC",
+  "report": "Item-level return rate. The denominator is every item sold, so cancelled and returned rows stay in it. HAVING guards against tiny categories producing meaningless percentages.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

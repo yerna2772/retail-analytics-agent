@@ -1,14 +1,21 @@
 {
-  "id": "trio-aov",
-  "question_variants": [
-    "What is the average order value?",
-    "AOV by month",
-    "Average order value trend"
+  "id": "aov",
+  "metrics_used": [
+    "aov",
+    "revenue"
   ],
-  "sql": "SELECT DATE_TRUNC(o.created_at, MONTH) AS month, AVG(oi.sale_price) AS aov FROM orders o JOIN order_items oi ON o.order_id = oi.order_id WHERE o.status NOT IN ('Cancelled', 'Returned') GROUP BY month ORDER BY month LIMIT 36",
-  "report": "Average order value by month, excluding cancelled and returned orders.",
-  "tables_used": ["orders", "order_items"],
-  "metrics_used": ["aov"],
-  "quality_score": 1.0,
-  "provenance": "authored"
+  "tables_used": [
+    "order_items"
+  ],
+  "question_variants": [
+    "average order value",
+    "what is our AOV",
+    "how much does a typical order come to",
+    "average basket size in money"
+  ],
+  "sql": "SELECT FORMAT_TIMESTAMP('%Y-%m', oi.created_at) AS month,\n  ROUND(SUM(oi.sale_price) / COUNT(DISTINCT oi.order_id), 2) AS aov\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nWHERE oi.status NOT IN ('Cancelled', 'Returned') AND EXTRACT(YEAR FROM oi.created_at) = 2023\nGROUP BY month ORDER BY month",
+  "report": "AOV divides net revenue by DISTINCT orders, not by line items. Averaging sale_price directly gives mean item price, which is a different and usually much smaller number.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
 }

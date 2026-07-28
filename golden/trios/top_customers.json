@@ -1,15 +1,21 @@
 {
-  "id": "trio-top-customers",
-  "question_variants": [
-    "Who are the top customers?",
-    "Top spenders",
-    "Highest spending customers",
-    "Which customers spend the most?"
+  "id": "top_customers",
+  "metrics_used": [
+    "revenue"
   ],
-  "sql": "SELECT oi.user_id, SUM(oi.sale_price) AS total_spend FROM order_items oi WHERE oi.status NOT IN ('Cancelled', 'Returned') GROUP BY oi.user_id ORDER BY total_spend DESC LIMIT 10",
-  "report": "Top 10 customers ranked by total spend, excluding cancelled and returned items.",
-  "tables_used": ["order_items"],
-  "metrics_used": ["revenue"],
-  "quality_score": 1.0,
-  "provenance": "authored"
+  "tables_used": [
+    "order_items",
+    "users"
+  ],
+  "question_variants": [
+    "top customers",
+    "who spends the most",
+    "highest value customers",
+    "biggest spenders"
+  ],
+  "sql": "SELECT oi.user_id, u.state, u.traffic_source,\n  ROUND(SUM(oi.sale_price), 2) AS lifetime_value,\n  COUNT(DISTINCT oi.order_id) AS orders\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nJOIN `bigquery-public-data.thelook_ecommerce.users` AS u ON u.id = oi.user_id\nWHERE oi.status NOT IN ('Cancelled', 'Returned')\nGROUP BY oi.user_id, u.state, u.traffic_source\nORDER BY lifetime_value DESC LIMIT 20",
+  "report": "Customers are identified by user_id only. Name, email and address are never selected. State and traffic source are included because they are the attributes that make a ranking actionable without identifying anyone.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
 }

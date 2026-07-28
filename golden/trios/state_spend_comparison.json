@@ -1,0 +1,22 @@
+{
+  "id": "state_spend_comparison",
+  "metrics_used": [
+    "revenue",
+    "aov"
+  ],
+  "tables_used": [
+    "order_items",
+    "users"
+  ],
+  "question_variants": [
+    "compare spending between states",
+    "why do customers in one state spend less",
+    "state by state performance",
+    "how does Texas compare to California"
+  ],
+  "sql": "SELECT u.state,\n  COUNT(DISTINCT u.id) AS buyers,\n  COUNT(DISTINCT oi.order_id) AS orders,\n  ROUND(SUM(oi.sale_price) / COUNT(DISTINCT u.id), 2) AS spend_per_buyer,\n  ROUND(SUM(oi.sale_price) / COUNT(DISTINCT oi.order_id), 2) AS aov,\n  ROUND(COUNT(DISTINCT oi.order_id) / COUNT(DISTINCT u.id), 2) AS orders_per_buyer\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nJOIN `bigquery-public-data.thelook_ecommerce.users` AS u ON u.id = oi.user_id\nWHERE oi.status NOT IN ('Cancelled', 'Returned')\nGROUP BY u.state ORDER BY spend_per_buyer DESC",
+  "report": "Comparing states on raw revenue only measures population. Normalise per buyer, then decompose: spend_per_buyer = aov x orders_per_buyer. That decomposition is what turns 'they spend less' into either 'they buy cheaper things' or 'they buy less often' \u2014 the two require different responses.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

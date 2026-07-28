@@ -1,0 +1,20 @@
+{
+  "id": "new_buyer_cohorts",
+  "metrics_used": [
+    "revenue"
+  ],
+  "tables_used": [
+    "order_items",
+    "users"
+  ],
+  "question_variants": [
+    "cohort analysis",
+    "how do newer customers compare to older ones",
+    "signup cohort spending"
+  ],
+  "sql": "SELECT FORMAT_TIMESTAMP('%Y-%m', u.created_at) AS signup_month,\n  COUNT(DISTINCT u.id) AS signups,\n  COUNT(DISTINCT oi.user_id) AS activated,\n  ROUND(SUM(oi.sale_price) / NULLIF(COUNT(DISTINCT oi.user_id), 0), 2) AS revenue_per_active\nFROM `bigquery-public-data.thelook_ecommerce.users` AS u\nLEFT JOIN `bigquery-public-data.thelook_ecommerce.order_items` AS oi ON oi.user_id = u.id AND oi.status NOT IN ('Cancelled', 'Returned')\nGROUP BY signup_month ORDER BY signup_month",
+  "report": "LEFT JOIN keeps cohorts with no purchases, so activation rate is visible. NULLIF guards the division. Recent cohorts have had less time to accumulate spend, which must be stated whenever cohorts are compared.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

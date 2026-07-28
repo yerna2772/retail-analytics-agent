@@ -1,6 +1,501 @@
 id,cost,category,name,brand,retail_price,department,sku,distribution_center_id
-1,25.00,Jeans,Slim Fit Jeans,Levi's,59.99,Men,LEV-001,1
-2,12.00,Tops,Cotton T-Shirt,Calvin Klein,29.99,Men,CK-001,1
-3,40.00,Outerwear,Down Jacket,The North Face,89.99,Men,TNF-001,2
-4,60.00,Dresses,Evening Dress,Calvin Klein,149.99,Women,CK-002,1
-5,15.00,Accessories,Canvas Belt,Levi's,39.99,Men,LEV-002,2
+1,40.1,Outerwear & Coats,Product 1,Wrangler,110.42,Women,SKU00001,3
+2,51.55,Sweaters,Product 2,Wrangler,153.01,Women,SKU00002,5
+3,57.61,Shorts,Product 3,Wrangler,94.06,Men,SKU00003,9
+4,77.89,Outerwear & Coats,Product 4,Carhartt,213.61,Women,SKU00004,8
+5,89.46,Swim,Product 5,Hanes,249.15,Men,SKU00005,3
+6,7.84,Jeans,Product 6,Levi's,18.75,Men,SKU00006,10
+7,8.0,Tops & Tees,Product 7,Levi's,22.93,Women,SKU00007,4
+8,57.29,Sweaters,Product 8,Carhartt,135.15,Men,SKU00008,10
+9,23.36,Tops & Tees,Product 9,Wrangler,68.68,Men,SKU00009,4
+10,18.9,Tops & Tees,Product 10,Adidas,39.7,Men,SKU00010,3
+11,73.62,Shorts,Product 11,Wrangler,153.25,Men,SKU00011,2
+12,57.16,Shorts,Product 12,Adidas,170.62,Women,SKU00012,6
+13,72.47,Shorts,Product 13,Calvin Klein,138.89,Women,SKU00013,10
+14,47.37,Accessories,Product 14,Carhartt,121.89,Men,SKU00014,10
+15,20.65,Swim,Product 15,Adidas,38.61,Men,SKU00015,5
+16,77.08,Outerwear & Coats,Product 16,Nike,187.22,Men,SKU00016,1
+17,73.82,Jeans,Product 17,Wrangler,176.43,Men,SKU00017,2
+18,14.86,Swim,Product 18,Carhartt,39.43,Men,SKU00018,3
+19,79.65,Jeans,Product 19,Columbia,214.43,Women,SKU00019,6
+20,82.06,Accessories,Product 20,Nike,240.59,Men,SKU00020,3
+21,24.87,Outerwear & Coats,Product 21,Hanes,46.69,Women,SKU00021,8
+22,30.57,Sweaters,Product 22,Carhartt,55.76,Men,SKU00022,7
+23,19.67,Swim,Product 23,Carhartt,49.12,Men,SKU00023,8
+24,33.4,Swim,Product 24,Levi's,80.84,Men,SKU00024,7
+25,42.39,Shorts,Product 25,Adidas,73.75,Women,SKU00025,4
+26,66.14,Tops & Tees,Product 26,Hanes,184.99,Women,SKU00026,8
+27,31.39,Shorts,Product 27,Hanes,61.29,Men,SKU00027,3
+28,64.3,Accessories,Product 28,Hanes,113.72,Men,SKU00028,1
+29,4.39,Accessories,Product 29,Nike,11.08,Women,SKU00029,6
+30,79.21,Sweaters,Product 30,Calvin Klein,147.92,Men,SKU00030,2
+31,34.43,Tops & Tees,Product 31,Wrangler,72.18,Women,SKU00031,2
+32,27.3,Shorts,Product 32,Nike,47.52,Men,SKU00032,5
+33,24.45,Swim,Product 33,Calvin Klein,56.83,Women,SKU00033,8
+34,82.89,Outerwear & Coats,Product 34,Nike,162.9,Men,SKU00034,6
+35,63.55,Sweaters,Product 35,Nike,115.32,Men,SKU00035,9
+36,50.89,Shorts,Product 36,Carhartt,126.19,Women,SKU00036,9
+37,72.04,Accessories,Product 37,Nike,189.49,Men,SKU00037,5
+38,70.36,Outerwear & Coats,Product 38,Columbia,116.66,Women,SKU00038,7
+39,75.34,Tops & Tees,Product 39,Adidas,213.43,Men,SKU00039,10
+40,54.7,Accessories,Product 40,Hanes,114.65,Women,SKU00040,10
+41,85.08,Tops & Tees,Product 41,Wrangler,191.79,Women,SKU00041,7
+42,27.64,Accessories,Product 42,Wrangler,68.86,Women,SKU00042,9
+43,49.61,Swim,Product 43,Nike,146.93,Women,SKU00043,7
+44,65.11,Outerwear & Coats,Product 44,Nike,141.05,Men,SKU00044,1
+45,67.61,Sweaters,Product 45,Hanes,153.82,Men,SKU00045,6
+46,30.24,Tops & Tees,Product 46,Wrangler,79.59,Men,SKU00046,10
+47,37.69,Accessories,Product 47,Nike,69.41,Women,SKU00047,1
+48,68.93,Accessories,Product 48,Nike,144.32,Women,SKU00048,3
+49,69.1,Sweaters,Product 49,Columbia,127.21,Women,SKU00049,4
+50,54.65,Sweaters,Product 50,Nike,136.87,Men,SKU00050,3
+51,72.19,Tops & Tees,Product 51,Carhartt,124.32,Men,SKU00051,10
+52,4.98,Jeans,Product 52,Hanes,10.72,Women,SKU00052,1
+53,15.56,Outerwear & Coats,Product 53,Calvin Klein,30.61,Women,SKU00053,1
+54,86.81,Sweaters,Product 54,Hanes,162.5,Men,SKU00054,8
+55,75.89,Shorts,Product 55,Calvin Klein,123.42,Men,SKU00055,10
+56,10.44,Shorts,Product 56,Levi's,25.11,Men,SKU00056,6
+57,69.62,Accessories,Product 57,Nike,124.5,Women,SKU00057,8
+58,12.05,Accessories,Product 58,Adidas,25.73,Men,SKU00058,1
+59,40.11,Jeans,Product 59,Nike,90.09,Men,SKU00059,6
+60,38.4,Outerwear & Coats,Product 60,Levi's,111.09,Women,SKU00060,1
+61,44.76,Outerwear & Coats,Product 61,Nike,96.11,Men,SKU00061,9
+62,65.34,Sweaters,Product 62,Calvin Klein,105.89,Women,SKU00062,4
+63,43.82,Tops & Tees,Product 63,Carhartt,96.1,Women,SKU00063,7
+64,60.68,Swim,Product 64,Adidas,154.29,Men,SKU00064,4
+65,71.64,Jeans,Product 65,Calvin Klein,179.11,Women,SKU00065,5
+66,65.28,Outerwear & Coats,Product 66,Carhartt,116.99,Men,SKU00066,2
+67,37.46,Sweaters,Product 67,Carhartt,66.04,Men,SKU00067,8
+68,19.37,Outerwear & Coats,Product 68,Hanes,45.18,Women,SKU00068,7
+69,80.91,Swim,Product 69,Calvin Klein,177.26,Men,SKU00069,5
+70,55.98,Tops & Tees,Product 70,Calvin Klein,153.74,Women,SKU00070,2
+71,44.71,Swim,Product 71,Wrangler,77.8,Women,SKU00071,1
+72,89.83,Swim,Product 72,Columbia,221.67,Men,SKU00072,3
+73,29.78,Tops & Tees,Product 73,Calvin Klein,84.43,Women,SKU00073,9
+74,22.85,Sweaters,Product 74,Carhartt,61.24,Men,SKU00074,8
+75,18.47,Sweaters,Product 75,Wrangler,40.63,Women,SKU00075,4
+76,47.08,Outerwear & Coats,Product 76,Carhartt,104.9,Men,SKU00076,3
+77,34.87,Sweaters,Product 77,Wrangler,92.18,Women,SKU00077,3
+78,39.95,Accessories,Product 78,Calvin Klein,79.63,Women,SKU00078,3
+79,21.02,Outerwear & Coats,Product 79,Carhartt,35.49,Men,SKU00079,1
+80,55.22,Tops & Tees,Product 80,Wrangler,136.73,Women,SKU00080,8
+81,67.8,Sweaters,Product 81,Nike,117.15,Women,SKU00081,4
+82,31.63,Accessories,Product 82,Calvin Klein,87.59,Men,SKU00082,10
+83,71.17,Outerwear & Coats,Product 83,Levi's,139.96,Women,SKU00083,1
+84,30.21,Swim,Product 84,Hanes,79.51,Women,SKU00084,4
+85,43.18,Accessories,Product 85,Carhartt,85.76,Women,SKU00085,1
+86,38.07,Outerwear & Coats,Product 86,Levi's,89.81,Women,SKU00086,6
+87,79.55,Sweaters,Product 87,Hanes,221.84,Men,SKU00087,7
+88,68.93,Outerwear & Coats,Product 88,Levi's,145.78,Women,SKU00088,2
+89,48.67,Swim,Product 89,Calvin Klein,141.81,Men,SKU00089,8
+90,44.88,Shorts,Product 90,Nike,108.05,Men,SKU00090,1
+91,70.83,Sweaters,Product 91,Wrangler,117.39,Women,SKU00091,9
+92,37.12,Sweaters,Product 92,Adidas,78.27,Women,SKU00092,1
+93,33.02,Jeans,Product 93,Adidas,85.46,Women,SKU00093,5
+94,82.68,Accessories,Product 94,Adidas,156.74,Women,SKU00094,8
+95,59.44,Shorts,Product 95,Adidas,96.96,Women,SKU00095,8
+96,64.27,Jeans,Product 96,Nike,119.3,Men,SKU00096,7
+97,39.29,Swim,Product 97,Columbia,112.99,Women,SKU00097,2
+98,56.83,Swim,Product 98,Columbia,131.35,Women,SKU00098,6
+99,22.75,Swim,Product 99,Wrangler,57.94,Men,SKU00099,7
+100,44.48,Tops & Tees,Product 100,Hanes,83.89,Men,SKU00100,9
+101,63.65,Swim,Product 101,Columbia,189.83,Men,SKU00101,6
+102,72.7,Shorts,Product 102,Wrangler,202.65,Women,SKU00102,10
+103,15.87,Swim,Product 103,Levi's,40.82,Men,SKU00103,5
+104,59.72,Accessories,Product 104,Hanes,159.51,Men,SKU00104,9
+105,78.33,Shorts,Product 105,Columbia,128.59,Women,SKU00105,4
+106,20.07,Jeans,Product 106,Levi's,43.41,Men,SKU00106,10
+107,84.06,Shorts,Product 107,Calvin Klein,190.34,Men,SKU00107,9
+108,76.18,Jeans,Product 108,Nike,174.2,Men,SKU00108,7
+109,64.41,Swim,Product 109,Adidas,172.73,Men,SKU00109,8
+110,11.78,Shorts,Product 110,Calvin Klein,27.65,Women,SKU00110,10
+111,26.57,Outerwear & Coats,Product 111,Carhartt,48.38,Men,SKU00111,10
+112,50.06,Shorts,Product 112,Adidas,148.25,Men,SKU00112,4
+113,86.36,Sweaters,Product 113,Calvin Klein,151.83,Women,SKU00113,10
+114,56.5,Outerwear & Coats,Product 114,Columbia,92.52,Women,SKU00114,10
+115,19.45,Accessories,Product 115,Wrangler,53.44,Women,SKU00115,4
+116,4.17,Sweaters,Product 116,Nike,12.27,Women,SKU00116,4
+117,52.28,Accessories,Product 117,Carhartt,131.86,Men,SKU00117,1
+118,63.97,Swim,Product 118,Levi's,144.08,Men,SKU00118,7
+119,44.55,Swim,Product 119,Calvin Klein,95.38,Women,SKU00119,5
+120,61.05,Shorts,Product 120,Levi's,127.06,Men,SKU00120,2
+121,36.65,Swim,Product 121,Carhartt,103.92,Men,SKU00121,9
+122,12.01,Jeans,Product 122,Adidas,35.01,Men,SKU00122,2
+123,44.93,Accessories,Product 123,Nike,97.82,Women,SKU00123,1
+124,42.38,Jeans,Product 124,Adidas,69.65,Men,SKU00124,9
+125,59.09,Swim,Product 125,Levi's,132.12,Women,SKU00125,3
+126,49.47,Accessories,Product 126,Hanes,117.26,Women,SKU00126,5
+127,76.45,Sweaters,Product 127,Calvin Klein,193.01,Men,SKU00127,8
+128,16.67,Accessories,Product 128,Wrangler,48.88,Men,SKU00128,8
+129,58.3,Jeans,Product 129,Levi's,127.47,Men,SKU00129,7
+130,84.59,Shorts,Product 130,Levi's,220.52,Women,SKU00130,2
+131,18.75,Outerwear & Coats,Product 131,Hanes,40.29,Men,SKU00131,9
+132,6.85,Tops & Tees,Product 132,Calvin Klein,13.26,Men,SKU00132,8
+133,8.89,Swim,Product 133,Nike,26.6,Women,SKU00133,4
+134,61.84,Sweaters,Product 134,Carhartt,122.26,Women,SKU00134,10
+135,36.81,Shorts,Product 135,Nike,91.98,Women,SKU00135,9
+136,62.52,Outerwear & Coats,Product 136,Calvin Klein,107.14,Men,SKU00136,5
+137,73.7,Shorts,Product 137,Nike,148.69,Women,SKU00137,4
+138,39.07,Jeans,Product 138,Levi's,113.86,Men,SKU00138,4
+139,43.43,Tops & Tees,Product 139,Calvin Klein,80.59,Women,SKU00139,10
+140,42.82,Swim,Product 140,Calvin Klein,83.49,Women,SKU00140,8
+141,4.07,Swim,Product 141,Carhartt,7.89,Women,SKU00141,3
+142,76.62,Shorts,Product 142,Carhartt,127.1,Women,SKU00142,4
+143,64.06,Outerwear & Coats,Product 143,Carhartt,147.45,Men,SKU00143,9
+144,74.1,Swim,Product 144,Wrangler,199.36,Women,SKU00144,1
+145,87.5,Swim,Product 145,Hanes,241.32,Women,SKU00145,9
+146,51.02,Jeans,Product 146,Wrangler,144.08,Women,SKU00146,8
+147,25.39,Sweaters,Product 147,Carhartt,74.0,Women,SKU00147,7
+148,17.1,Tops & Tees,Product 148,Nike,32.89,Men,SKU00148,7
+149,38.68,Outerwear & Coats,Product 149,Hanes,77.25,Men,SKU00149,3
+150,36.06,Sweaters,Product 150,Columbia,106.55,Men,SKU00150,3
+151,68.37,Sweaters,Product 151,Nike,167.29,Women,SKU00151,3
+152,18.26,Outerwear & Coats,Product 152,Nike,29.5,Women,SKU00152,7
+153,10.25,Outerwear & Coats,Product 153,Hanes,18.94,Women,SKU00153,7
+154,56.48,Accessories,Product 154,Nike,136.86,Men,SKU00154,4
+155,31.57,Accessories,Product 155,Columbia,88.75,Women,SKU00155,9
+156,48.27,Shorts,Product 156,Columbia,107.71,Men,SKU00156,6
+157,82.81,Outerwear & Coats,Product 157,Calvin Klein,167.4,Men,SKU00157,5
+158,49.17,Jeans,Product 158,Carhartt,140.3,Men,SKU00158,2
+159,32.15,Accessories,Product 159,Adidas,95.37,Men,SKU00159,3
+160,89.23,Outerwear & Coats,Product 160,Calvin Klein,146.43,Men,SKU00160,5
+161,29.58,Shorts,Product 161,Columbia,85.84,Men,SKU00161,10
+162,66.3,Jeans,Product 162,Carhartt,174.88,Men,SKU00162,1
+163,78.88,Shorts,Product 163,Levi's,150.25,Men,SKU00163,1
+164,21.55,Swim,Product 164,Columbia,44.18,Women,SKU00164,3
+165,6.85,Accessories,Product 165,Hanes,17.14,Women,SKU00165,5
+166,17.74,Swim,Product 166,Nike,35.76,Men,SKU00166,6
+167,57.41,Shorts,Product 167,Nike,96.33,Men,SKU00167,4
+168,32.97,Tops & Tees,Product 168,Calvin Klein,79.07,Women,SKU00168,7
+169,40.82,Swim,Product 169,Levi's,100.88,Women,SKU00169,9
+170,81.89,Outerwear & Coats,Product 170,Nike,235.97,Men,SKU00170,6
+171,38.6,Tops & Tees,Product 171,Calvin Klein,66.36,Women,SKU00171,4
+172,58.0,Jeans,Product 172,Columbia,142.79,Women,SKU00172,2
+173,84.53,Outerwear & Coats,Product 173,Wrangler,251.01,Men,SKU00173,5
+174,77.06,Jeans,Product 174,Carhartt,150.04,Women,SKU00174,8
+175,26.16,Shorts,Product 175,Nike,53.5,Men,SKU00175,4
+176,45.47,Accessories,Product 176,Wrangler,126.89,Men,SKU00176,1
+177,8.46,Outerwear & Coats,Product 177,Columbia,15.86,Men,SKU00177,2
+178,46.68,Sweaters,Product 178,Calvin Klein,89.44,Men,SKU00178,10
+179,69.51,Tops & Tees,Product 179,Calvin Klein,125.48,Women,SKU00179,10
+180,68.0,Accessories,Product 180,Levi's,165.04,Women,SKU00180,4
+181,22.06,Jeans,Product 181,Adidas,44.51,Men,SKU00181,5
+182,77.25,Sweaters,Product 182,Carhartt,215.16,Women,SKU00182,9
+183,56.37,Swim,Product 183,Carhartt,129.13,Men,SKU00183,8
+184,68.48,Accessories,Product 184,Hanes,192.59,Men,SKU00184,6
+185,88.83,Jeans,Product 185,Columbia,193.56,Men,SKU00185,10
+186,10.13,Outerwear & Coats,Product 186,Calvin Klein,30.07,Women,SKU00186,2
+187,45.57,Tops & Tees,Product 187,Nike,128.03,Women,SKU00187,2
+188,27.05,Outerwear & Coats,Product 188,Adidas,80.07,Men,SKU00188,10
+189,74.0,Accessories,Product 189,Wrangler,171.12,Women,SKU00189,6
+190,50.84,Jeans,Product 190,Levi's,104.19,Women,SKU00190,5
+191,27.33,Swim,Product 191,Hanes,69.33,Men,SKU00191,10
+192,61.31,Outerwear & Coats,Product 192,Calvin Klein,153.6,Women,SKU00192,1
+193,8.35,Jeans,Product 193,Adidas,23.79,Men,SKU00193,5
+194,31.43,Sweaters,Product 194,Levi's,74.03,Men,SKU00194,4
+195,55.96,Swim,Product 195,Nike,103.5,Men,SKU00195,4
+196,54.62,Outerwear & Coats,Product 196,Nike,146.06,Men,SKU00196,4
+197,48.18,Swim,Product 197,Hanes,123.26,Women,SKU00197,1
+198,60.77,Accessories,Product 198,Calvin Klein,110.13,Women,SKU00198,3
+199,56.29,Sweaters,Product 199,Levi's,166.57,Women,SKU00199,5
+200,63.52,Shorts,Product 200,Adidas,178.73,Men,SKU00200,6
+201,65.99,Tops & Tees,Product 201,Adidas,110.71,Men,SKU00201,10
+202,88.75,Sweaters,Product 202,Carhartt,247.61,Men,SKU00202,7
+203,45.91,Accessories,Product 203,Columbia,137.24,Men,SKU00203,10
+204,18.46,Shorts,Product 204,Levi's,45.03,Men,SKU00204,9
+205,76.16,Swim,Product 205,Carhartt,214.16,Men,SKU00205,2
+206,21.17,Swim,Product 206,Nike,57.9,Women,SKU00206,2
+207,12.28,Accessories,Product 207,Carhartt,29.16,Men,SKU00207,6
+208,18.02,Outerwear & Coats,Product 208,Adidas,33.54,Men,SKU00208,2
+209,55.08,Outerwear & Coats,Product 209,Calvin Klein,110.9,Women,SKU00209,3
+210,16.62,Sweaters,Product 210,Adidas,40.57,Women,SKU00210,1
+211,44.94,Sweaters,Product 211,Wrangler,116.65,Women,SKU00211,8
+212,66.47,Swim,Product 212,Calvin Klein,186.71,Men,SKU00212,4
+213,10.87,Swim,Product 213,Levi's,21.79,Men,SKU00213,10
+214,53.22,Shorts,Product 214,Adidas,128.11,Women,SKU00214,8
+215,73.14,Outerwear & Coats,Product 215,Nike,206.39,Men,SKU00215,4
+216,32.1,Swim,Product 216,Hanes,92.83,Women,SKU00216,4
+217,87.96,Tops & Tees,Product 217,Hanes,149.81,Women,SKU00217,1
+218,15.16,Outerwear & Coats,Product 218,Columbia,24.38,Women,SKU00218,9
+219,38.51,Sweaters,Product 219,Calvin Klein,82.82,Men,SKU00219,7
+220,38.04,Outerwear & Coats,Product 220,Calvin Klein,80.62,Men,SKU00220,9
+221,80.29,Jeans,Product 221,Hanes,158.36,Men,SKU00221,10
+222,50.87,Jeans,Product 222,Calvin Klein,142.61,Men,SKU00222,10
+223,14.17,Tops & Tees,Product 223,Calvin Klein,38.65,Men,SKU00223,1
+224,16.31,Tops & Tees,Product 224,Calvin Klein,39.99,Women,SKU00224,3
+225,63.22,Swim,Product 225,Columbia,168.15,Women,SKU00225,10
+226,35.53,Swim,Product 226,Levi's,85.42,Men,SKU00226,7
+227,7.58,Accessories,Product 227,Hanes,12.58,Women,SKU00227,6
+228,82.88,Outerwear & Coats,Product 228,Carhartt,209.37,Women,SKU00228,5
+229,88.41,Accessories,Product 229,Nike,146.88,Women,SKU00229,9
+230,86.79,Sweaters,Product 230,Carhartt,251.35,Men,SKU00230,9
+231,11.79,Accessories,Product 231,Calvin Klein,29.27,Men,SKU00231,9
+232,55.19,Sweaters,Product 232,Wrangler,129.21,Women,SKU00232,5
+233,69.54,Outerwear & Coats,Product 233,Hanes,126.54,Men,SKU00233,10
+234,72.3,Sweaters,Product 234,Nike,128.17,Women,SKU00234,1
+235,31.08,Outerwear & Coats,Product 235,Hanes,50.25,Women,SKU00235,2
+236,73.73,Swim,Product 236,Nike,149.93,Women,SKU00236,1
+237,42.5,Sweaters,Product 237,Columbia,119.39,Men,SKU00237,7
+238,81.55,Outerwear & Coats,Product 238,Calvin Klein,145.45,Women,SKU00238,2
+239,35.47,Sweaters,Product 239,Calvin Klein,60.28,Men,SKU00239,1
+240,9.84,Tops & Tees,Product 240,Levi's,21.57,Men,SKU00240,6
+241,40.4,Sweaters,Product 241,Columbia,97.0,Women,SKU00241,3
+242,19.41,Sweaters,Product 242,Levi's,36.74,Women,SKU00242,5
+243,42.04,Sweaters,Product 243,Calvin Klein,109.03,Women,SKU00243,6
+244,22.39,Shorts,Product 244,Wrangler,57.59,Women,SKU00244,10
+245,8.68,Shorts,Product 245,Columbia,15.38,Men,SKU00245,9
+246,58.8,Accessories,Product 246,Hanes,129.87,Women,SKU00246,7
+247,53.94,Outerwear & Coats,Product 247,Wrangler,115.63,Men,SKU00247,9
+248,24.21,Sweaters,Product 248,Columbia,47.68,Women,SKU00248,7
+249,51.04,Jeans,Product 249,Wrangler,130.73,Men,SKU00249,3
+250,87.47,Shorts,Product 250,Columbia,243.74,Men,SKU00250,9
+251,26.82,Swim,Product 251,Calvin Klein,73.16,Men,SKU00251,10
+252,19.96,Jeans,Product 252,Wrangler,44.02,Men,SKU00252,4
+253,20.31,Swim,Product 253,Nike,52.12,Women,SKU00253,4
+254,71.61,Tops & Tees,Product 254,Adidas,171.27,Women,SKU00254,5
+255,26.28,Tops & Tees,Product 255,Nike,53.9,Men,SKU00255,7
+256,84.39,Outerwear & Coats,Product 256,Hanes,207.96,Men,SKU00256,5
+257,18.22,Outerwear & Coats,Product 257,Adidas,45.02,Men,SKU00257,4
+258,66.0,Swim,Product 258,Wrangler,165.82,Men,SKU00258,3
+259,24.49,Tops & Tees,Product 259,Calvin Klein,58.91,Women,SKU00259,1
+260,9.61,Accessories,Product 260,Adidas,18.44,Men,SKU00260,9
+261,27.99,Tops & Tees,Product 261,Adidas,82.46,Women,SKU00261,2
+262,56.0,Accessories,Product 262,Nike,159.33,Men,SKU00262,8
+263,32.5,Sweaters,Product 263,Levi's,66.94,Women,SKU00263,6
+264,14.91,Outerwear & Coats,Product 264,Calvin Klein,42.95,Women,SKU00264,6
+265,41.53,Shorts,Product 265,Levi's,78.18,Men,SKU00265,2
+266,6.53,Shorts,Product 266,Hanes,17.66,Men,SKU00266,4
+267,61.92,Tops & Tees,Product 267,Hanes,185.14,Men,SKU00267,3
+268,46.38,Outerwear & Coats,Product 268,Columbia,88.39,Men,SKU00268,7
+269,80.26,Accessories,Product 269,Calvin Klein,235.72,Women,SKU00269,5
+270,66.79,Jeans,Product 270,Columbia,107.19,Women,SKU00270,1
+271,24.47,Swim,Product 271,Calvin Klein,50.63,Women,SKU00271,3
+272,57.66,Swim,Product 272,Carhartt,103.18,Women,SKU00272,2
+273,66.6,Jeans,Product 273,Columbia,180.32,Women,SKU00273,1
+274,15.38,Outerwear & Coats,Product 274,Carhartt,25.01,Women,SKU00274,8
+275,71.21,Sweaters,Product 275,Nike,156.61,Women,SKU00275,3
+276,35.93,Jeans,Product 276,Hanes,99.26,Men,SKU00276,1
+277,25.08,Outerwear & Coats,Product 277,Adidas,68.39,Women,SKU00277,7
+278,79.94,Swim,Product 278,Carhartt,233.76,Men,SKU00278,5
+279,53.34,Sweaters,Product 279,Wrangler,129.78,Men,SKU00279,2
+280,48.95,Tops & Tees,Product 280,Columbia,129.62,Women,SKU00280,10
+281,71.91,Sweaters,Product 281,Hanes,118.52,Women,SKU00281,6
+282,5.22,Sweaters,Product 282,Adidas,9.4,Women,SKU00282,7
+283,29.51,Tops & Tees,Product 283,Nike,78.01,Women,SKU00283,7
+284,12.72,Jeans,Product 284,Nike,33.15,Men,SKU00284,2
+285,32.34,Sweaters,Product 285,Wrangler,62.07,Men,SKU00285,1
+286,64.18,Tops & Tees,Product 286,Columbia,141.95,Men,SKU00286,3
+287,82.23,Swim,Product 287,Carhartt,239.67,Women,SKU00287,3
+288,75.1,Shorts,Product 288,Nike,156.01,Women,SKU00288,9
+289,63.86,Jeans,Product 289,Nike,183.44,Men,SKU00289,4
+290,42.72,Shorts,Product 290,Columbia,71.81,Women,SKU00290,2
+291,37.36,Jeans,Product 291,Hanes,96.26,Men,SKU00291,5
+292,53.5,Sweaters,Product 292,Hanes,108.52,Women,SKU00292,7
+293,6.11,Shorts,Product 293,Wrangler,14.18,Women,SKU00293,10
+294,27.16,Swim,Product 294,Hanes,50.79,Men,SKU00294,1
+295,77.64,Swim,Product 295,Columbia,140.98,Women,SKU00295,2
+296,8.36,Accessories,Product 296,Calvin Klein,20.09,Men,SKU00296,7
+297,11.2,Outerwear & Coats,Product 297,Nike,18.04,Women,SKU00297,6
+298,34.64,Sweaters,Product 298,Columbia,88.61,Women,SKU00298,5
+299,32.43,Shorts,Product 299,Hanes,66.53,Women,SKU00299,8
+300,34.28,Tops & Tees,Product 300,Carhartt,77.42,Women,SKU00300,1
+301,4.59,Outerwear & Coats,Product 301,Columbia,9.51,Women,SKU00301,9
+302,77.6,Sweaters,Product 302,Calvin Klein,162.99,Women,SKU00302,7
+303,34.35,Sweaters,Product 303,Levi's,62.36,Women,SKU00303,5
+304,26.36,Swim,Product 304,Columbia,76.61,Men,SKU00304,3
+305,72.94,Swim,Product 305,Adidas,137.29,Women,SKU00305,9
+306,89.84,Jeans,Product 306,Adidas,248.96,Women,SKU00306,1
+307,66.8,Outerwear & Coats,Product 307,Calvin Klein,196.5,Women,SKU00307,4
+308,7.92,Accessories,Product 308,Carhartt,21.65,Women,SKU00308,3
+309,82.8,Accessories,Product 309,Hanes,139.52,Men,SKU00309,6
+310,66.89,Accessories,Product 310,Adidas,109.87,Women,SKU00310,2
+311,22.28,Shorts,Product 311,Calvin Klein,53.86,Women,SKU00311,2
+312,74.84,Outerwear & Coats,Product 312,Columbia,210.69,Women,SKU00312,3
+313,76.3,Sweaters,Product 313,Nike,181.39,Men,SKU00313,4
+314,35.18,Accessories,Product 314,Carhartt,82.23,Women,SKU00314,6
+315,82.64,Outerwear & Coats,Product 315,Adidas,173.17,Women,SKU00315,8
+316,29.73,Accessories,Product 316,Calvin Klein,71.42,Women,SKU00316,4
+317,53.28,Shorts,Product 317,Calvin Klein,151.51,Men,SKU00317,3
+318,60.58,Outerwear & Coats,Product 318,Calvin Klein,111.23,Women,SKU00318,5
+319,16.65,Swim,Product 319,Calvin Klein,45.32,Men,SKU00319,6
+320,82.38,Accessories,Product 320,Nike,170.11,Women,SKU00320,10
+321,76.37,Jeans,Product 321,Columbia,142.64,Women,SKU00321,3
+322,7.51,Jeans,Product 322,Columbia,19.01,Women,SKU00322,5
+323,49.8,Outerwear & Coats,Product 323,Wrangler,122.19,Men,SKU00323,5
+324,9.74,Outerwear & Coats,Product 324,Carhartt,29.13,Men,SKU00324,4
+325,4.32,Accessories,Product 325,Nike,11.99,Women,SKU00325,9
+326,79.15,Shorts,Product 326,Carhartt,138.39,Women,SKU00326,3
+327,25.04,Swim,Product 327,Adidas,45.96,Women,SKU00327,1
+328,67.37,Sweaters,Product 328,Hanes,175.36,Women,SKU00328,3
+329,43.5,Swim,Product 329,Columbia,87.42,Men,SKU00329,2
+330,77.04,Outerwear & Coats,Product 330,Adidas,198.74,Women,SKU00330,7
+331,19.63,Accessories,Product 331,Adidas,49.47,Men,SKU00331,6
+332,11.94,Swim,Product 332,Levi's,26.94,Men,SKU00332,5
+333,70.99,Outerwear & Coats,Product 333,Wrangler,195.25,Women,SKU00333,7
+334,57.57,Accessories,Product 334,Calvin Klein,167.36,Men,SKU00334,4
+335,15.48,Shorts,Product 335,Nike,29.54,Women,SKU00335,2
+336,42.73,Accessories,Product 336,Calvin Klein,127.04,Men,SKU00336,4
+337,44.55,Swim,Product 337,Calvin Klein,73.52,Women,SKU00337,6
+338,74.86,Swim,Product 338,Columbia,125.61,Women,SKU00338,8
+339,88.66,Accessories,Product 339,Wrangler,229.15,Men,SKU00339,8
+340,40.18,Sweaters,Product 340,Wrangler,75.68,Men,SKU00340,9
+341,50.51,Shorts,Product 341,Calvin Klein,140.43,Men,SKU00341,8
+342,48.22,Sweaters,Product 342,Levi's,98.78,Men,SKU00342,9
+343,53.97,Sweaters,Product 343,Hanes,99.02,Men,SKU00343,9
+344,26.67,Accessories,Product 344,Columbia,58.02,Men,SKU00344,3
+345,86.52,Shorts,Product 345,Columbia,186.71,Men,SKU00345,4
+346,55.06,Shorts,Product 346,Levi's,102.0,Men,SKU00346,6
+347,67.49,Accessories,Product 347,Levi's,122.6,Women,SKU00347,2
+348,47.92,Tops & Tees,Product 348,Calvin Klein,120.2,Women,SKU00348,1
+349,82.73,Outerwear & Coats,Product 349,Calvin Klein,233.49,Men,SKU00349,8
+350,54.41,Tops & Tees,Product 350,Columbia,146.42,Men,SKU00350,7
+351,51.58,Tops & Tees,Product 351,Adidas,102.38,Women,SKU00351,5
+352,56.24,Outerwear & Coats,Product 352,Calvin Klein,109.09,Women,SKU00352,1
+353,40.18,Sweaters,Product 353,Columbia,93.03,Women,SKU00353,9
+354,71.33,Swim,Product 354,Adidas,213.64,Men,SKU00354,6
+355,34.47,Outerwear & Coats,Product 355,Calvin Klein,93.78,Women,SKU00355,4
+356,67.62,Swim,Product 356,Nike,187.7,Men,SKU00356,2
+357,31.77,Sweaters,Product 357,Calvin Klein,81.14,Women,SKU00357,8
+358,62.15,Jeans,Product 358,Wrangler,110.49,Men,SKU00358,9
+359,45.15,Accessories,Product 359,Adidas,104.89,Women,SKU00359,5
+360,7.85,Sweaters,Product 360,Adidas,13.71,Men,SKU00360,5
+361,9.49,Outerwear & Coats,Product 361,Calvin Klein,23.84,Men,SKU00361,3
+362,84.51,Shorts,Product 362,Wrangler,235.88,Men,SKU00362,7
+363,50.07,Outerwear & Coats,Product 363,Levi's,102.84,Women,SKU00363,9
+364,55.75,Shorts,Product 364,Calvin Klein,134.69,Women,SKU00364,8
+365,57.14,Accessories,Product 365,Calvin Klein,161.32,Men,SKU00365,4
+366,58.94,Sweaters,Product 366,Carhartt,123.78,Women,SKU00366,5
+367,39.43,Outerwear & Coats,Product 367,Carhartt,64.45,Men,SKU00367,7
+368,66.4,Outerwear & Coats,Product 368,Carhartt,181.95,Men,SKU00368,7
+369,22.74,Tops & Tees,Product 369,Wrangler,51.66,Women,SKU00369,9
+370,60.92,Swim,Product 370,Levi's,127.75,Women,SKU00370,6
+371,42.96,Tops & Tees,Product 371,Nike,108.58,Men,SKU00371,2
+372,47.78,Accessories,Product 372,Adidas,123.99,Men,SKU00372,10
+373,75.37,Sweaters,Product 373,Wrangler,217.85,Women,SKU00373,3
+374,89.65,Tops & Tees,Product 374,Adidas,165.41,Men,SKU00374,7
+375,77.49,Shorts,Product 375,Wrangler,131.47,Women,SKU00375,5
+376,50.23,Accessories,Product 376,Hanes,136.42,Men,SKU00376,8
+377,82.29,Sweaters,Product 377,Carhartt,223.22,Women,SKU00377,5
+378,37.43,Shorts,Product 378,Levi's,77.99,Women,SKU00378,9
+379,28.38,Jeans,Product 379,Columbia,56.05,Men,SKU00379,7
+380,9.47,Jeans,Product 380,Wrangler,15.33,Men,SKU00380,3
+381,10.62,Shorts,Product 381,Levi's,23.01,Men,SKU00381,5
+382,80.65,Jeans,Product 382,Adidas,217.98,Women,SKU00382,5
+383,61.42,Outerwear & Coats,Product 383,Calvin Klein,158.91,Women,SKU00383,9
+384,21.49,Outerwear & Coats,Product 384,Columbia,43.04,Men,SKU00384,10
+385,73.69,Swim,Product 385,Nike,173.2,Women,SKU00385,4
+386,87.51,Swim,Product 386,Calvin Klein,239.49,Women,SKU00386,6
+387,87.36,Shorts,Product 387,Calvin Klein,210.12,Women,SKU00387,3
+388,14.03,Tops & Tees,Product 388,Hanes,29.86,Women,SKU00388,2
+389,55.58,Outerwear & Coats,Product 389,Hanes,121.13,Men,SKU00389,1
+390,16.0,Sweaters,Product 390,Hanes,46.1,Women,SKU00390,3
+391,73.77,Jeans,Product 391,Nike,199.98,Men,SKU00391,3
+392,62.48,Tops & Tees,Product 392,Carhartt,153.65,Men,SKU00392,2
+393,81.37,Tops & Tees,Product 393,Columbia,240.91,Men,SKU00393,7
+394,45.99,Accessories,Product 394,Calvin Klein,79.62,Women,SKU00394,10
+395,10.21,Tops & Tees,Product 395,Carhartt,20.28,Women,SKU00395,2
+396,27.59,Jeans,Product 396,Nike,52.31,Women,SKU00396,2
+397,43.38,Swim,Product 397,Hanes,124.55,Women,SKU00397,5
+398,16.05,Swim,Product 398,Hanes,43.96,Men,SKU00398,9
+399,37.0,Outerwear & Coats,Product 399,Nike,78.86,Men,SKU00399,10
+400,54.27,Swim,Product 400,Wrangler,142.68,Women,SKU00400,10
+401,58.5,Sweaters,Product 401,Nike,145.96,Women,SKU00401,8
+402,36.3,Sweaters,Product 402,Levi's,73.26,Men,SKU00402,1
+403,22.6,Swim,Product 403,Wrangler,36.24,Men,SKU00403,6
+404,33.52,Shorts,Product 404,Adidas,92.66,Women,SKU00404,5
+405,83.58,Sweaters,Product 405,Hanes,190.02,Men,SKU00405,9
+406,82.31,Tops & Tees,Product 406,Calvin Klein,166.35,Men,SKU00406,4
+407,9.69,Sweaters,Product 407,Carhartt,20.63,Men,SKU00407,6
+408,63.05,Sweaters,Product 408,Adidas,114.02,Men,SKU00408,2
+409,26.42,Swim,Product 409,Columbia,61.73,Women,SKU00409,10
+410,74.86,Tops & Tees,Product 410,Levi's,133.82,Men,SKU00410,5
+411,5.2,Sweaters,Product 411,Carhartt,10.1,Women,SKU00411,7
+412,40.54,Accessories,Product 412,Adidas,67.8,Women,SKU00412,9
+413,8.44,Jeans,Product 413,Columbia,24.91,Men,SKU00413,5
+414,21.73,Jeans,Product 414,Wrangler,37.57,Men,SKU00414,5
+415,23.68,Outerwear & Coats,Product 415,Hanes,43.55,Men,SKU00415,1
+416,45.79,Accessories,Product 416,Levi's,108.44,Men,SKU00416,1
+417,56.9,Outerwear & Coats,Product 417,Wrangler,124.76,Men,SKU00417,6
+418,69.44,Swim,Product 418,Calvin Klein,150.63,Men,SKU00418,3
+419,78.28,Swim,Product 419,Adidas,152.03,Men,SKU00419,6
+420,85.02,Tops & Tees,Product 420,Adidas,137.49,Men,SKU00420,1
+421,19.88,Jeans,Product 421,Nike,58.5,Women,SKU00421,6
+422,88.01,Shorts,Product 422,Wrangler,252.94,Men,SKU00422,6
+423,82.73,Tops & Tees,Product 423,Nike,165.76,Men,SKU00423,2
+424,28.88,Tops & Tees,Product 424,Calvin Klein,62.53,Women,SKU00424,1
+425,12.87,Jeans,Product 425,Carhartt,26.35,Men,SKU00425,1
+426,12.21,Swim,Product 426,Hanes,26.79,Men,SKU00426,4
+427,77.0,Accessories,Product 427,Nike,137.08,Men,SKU00427,5
+428,7.21,Sweaters,Product 428,Adidas,20.31,Men,SKU00428,3
+429,61.18,Jeans,Product 429,Wrangler,130.25,Men,SKU00429,2
+430,86.64,Shorts,Product 430,Calvin Klein,241.77,Men,SKU00430,4
+431,26.02,Sweaters,Product 431,Adidas,49.78,Men,SKU00431,4
+432,23.59,Tops & Tees,Product 432,Wrangler,43.74,Women,SKU00432,2
+433,72.51,Tops & Tees,Product 433,Adidas,190.42,Women,SKU00433,6
+434,75.59,Outerwear & Coats,Product 434,Carhartt,156.21,Men,SKU00434,5
+435,19.97,Outerwear & Coats,Product 435,Carhartt,53.55,Women,SKU00435,10
+436,42.07,Swim,Product 436,Calvin Klein,77.52,Women,SKU00436,7
+437,20.63,Tops & Tees,Product 437,Calvin Klein,54.08,Women,SKU00437,4
+438,41.6,Outerwear & Coats,Product 438,Columbia,102.97,Men,SKU00438,5
+439,60.92,Accessories,Product 439,Wrangler,112.6,Women,SKU00439,4
+440,34.63,Swim,Product 440,Levi's,71.63,Men,SKU00440,7
+441,88.44,Outerwear & Coats,Product 441,Wrangler,242.3,Men,SKU00441,5
+442,45.96,Outerwear & Coats,Product 442,Nike,97.33,Men,SKU00442,9
+443,9.21,Outerwear & Coats,Product 443,Hanes,18.61,Women,SKU00443,8
+444,71.32,Sweaters,Product 444,Adidas,139.0,Women,SKU00444,3
+445,28.81,Outerwear & Coats,Product 445,Carhartt,83.36,Women,SKU00445,7
+446,65.89,Shorts,Product 446,Adidas,136.61,Women,SKU00446,3
+447,69.52,Swim,Product 447,Wrangler,184.03,Men,SKU00447,5
+448,21.42,Shorts,Product 448,Hanes,49.08,Men,SKU00448,5
+449,12.88,Outerwear & Coats,Product 449,Levi's,23.43,Women,SKU00449,7
+450,85.78,Shorts,Product 450,Adidas,176.16,Men,SKU00450,5
+451,39.33,Sweaters,Product 451,Hanes,76.49,Men,SKU00451,7
+452,71.49,Outerwear & Coats,Product 452,Nike,144.01,Women,SKU00452,10
+453,58.95,Accessories,Product 453,Levi's,128.59,Women,SKU00453,4
+454,61.95,Accessories,Product 454,Levi's,107.92,Men,SKU00454,8
+455,11.6,Tops & Tees,Product 455,Calvin Klein,26.63,Men,SKU00455,8
+456,15.25,Jeans,Product 456,Columbia,39.16,Men,SKU00456,2
+457,27.55,Accessories,Product 457,Hanes,75.5,Men,SKU00457,9
+458,81.08,Outerwear & Coats,Product 458,Carhartt,194.87,Men,SKU00458,3
+459,88.21,Sweaters,Product 459,Hanes,237.92,Women,SKU00459,8
+460,38.13,Sweaters,Product 460,Carhartt,105.76,Men,SKU00460,7
+461,76.45,Sweaters,Product 461,Wrangler,202.66,Men,SKU00461,4
+462,55.41,Outerwear & Coats,Product 462,Nike,146.69,Women,SKU00462,1
+463,22.51,Swim,Product 463,Carhartt,51.95,Men,SKU00463,2
+464,19.61,Outerwear & Coats,Product 464,Hanes,51.1,Women,SKU00464,2
+465,57.36,Outerwear & Coats,Product 465,Calvin Klein,124.84,Men,SKU00465,4
+466,32.26,Accessories,Product 466,Levi's,53.1,Women,SKU00466,2
+467,18.6,Swim,Product 467,Calvin Klein,32.72,Men,SKU00467,10
+468,55.74,Shorts,Product 468,Calvin Klein,148.6,Men,SKU00468,4
+469,23.47,Sweaters,Product 469,Carhartt,44.63,Women,SKU00469,8
+470,60.48,Tops & Tees,Product 470,Carhartt,141.94,Men,SKU00470,5
+471,7.92,Accessories,Product 471,Carhartt,13.65,Men,SKU00471,2
+472,78.39,Outerwear & Coats,Product 472,Adidas,129.56,Women,SKU00472,9
+473,11.84,Outerwear & Coats,Product 473,Calvin Klein,35.11,Men,SKU00473,1
+474,8.09,Sweaters,Product 474,Nike,23.07,Men,SKU00474,3
+475,49.55,Swim,Product 475,Hanes,138.47,Men,SKU00475,7
+476,82.77,Jeans,Product 476,Levi's,233.96,Men,SKU00476,4
+477,29.11,Jeans,Product 477,Adidas,57.08,Women,SKU00477,5
+478,51.6,Tops & Tees,Product 478,Calvin Klein,97.7,Men,SKU00478,2
+479,40.59,Shorts,Product 479,Columbia,97.08,Men,SKU00479,8
+480,76.01,Accessories,Product 480,Levi's,143.47,Women,SKU00480,1
+481,10.87,Swim,Product 481,Columbia,18.9,Men,SKU00481,8
+482,13.98,Tops & Tees,Product 482,Levi's,33.78,Women,SKU00482,1
+483,89.69,Sweaters,Product 483,Columbia,227.51,Men,SKU00483,3
+484,87.48,Accessories,Product 484,Levi's,175.4,Men,SKU00484,3
+485,76.27,Outerwear & Coats,Product 485,Carhartt,155.89,Women,SKU00485,2
+486,70.44,Accessories,Product 486,Adidas,208.34,Women,SKU00486,9
+487,35.69,Outerwear & Coats,Product 487,Carhartt,100.08,Men,SKU00487,10
+488,10.17,Accessories,Product 488,Levi's,16.81,Women,SKU00488,5
+489,56.86,Jeans,Product 489,Hanes,100.7,Women,SKU00489,3
+490,25.46,Tops & Tees,Product 490,Levi's,53.15,Men,SKU00490,2
+491,65.06,Jeans,Product 491,Wrangler,123.93,Men,SKU00491,7
+492,55.33,Outerwear & Coats,Product 492,Nike,118.62,Women,SKU00492,9
+493,25.78,Sweaters,Product 493,Wrangler,47.28,Women,SKU00493,3
+494,69.16,Outerwear & Coats,Product 494,Carhartt,197.16,Men,SKU00494,3
+495,58.44,Sweaters,Product 495,Columbia,152.47,Men,SKU00495,8
+496,54.2,Accessories,Product 496,Carhartt,126.22,Women,SKU00496,7
+497,37.58,Sweaters,Product 497,Adidas,111.75,Men,SKU00497,6
+498,13.11,Shorts,Product 498,Wrangler,28.92,Women,SKU00498,7
+499,21.91,Sweaters,Product 499,Carhartt,62.25,Men,SKU00499,8
+500,58.88,Jeans,Product 500,Columbia,107.07,Women,SKU00500,3

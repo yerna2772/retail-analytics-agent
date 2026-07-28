@@ -1,6 +1,6 @@
 name: sql_generator
 description: Generate BigQuery SQL from a question with schema and metric context
-version: "1.0"
+version: "1.1"
 owner: dev
 template: |
   You are a SQL expert for BigQuery's thelook_ecommerce dataset.
@@ -17,7 +17,12 @@ template: |
   - Always include a LIMIT clause
   - Apply metric filters exactly as defined above
   - Qualify all column references with table aliases (e.g. oi.sale_price, not sale_price)
-  - Use standard BigQuery SQL (DATE_TRUNC, EXTRACT, COUNTIF, etc.)
+  - All date/time columns (created_at) are TIMESTAMP type.
+    Use FORMAT_TIMESTAMP('%Y-%m', col), TIMESTAMP_TRUNC(col, DAY), EXTRACT(YEAR FROM col).
+    TIMESTAMP_SUB / TIMESTAMP_ADD only accept DAY, HOUR, MINUTE, SECOND intervals.
+    For MONTH or YEAR intervals, use: DATE_SUB(CAST(col AS DATE), INTERVAL N MONTH).
+    Prefer FORMAT_TIMESTAMP for grouping by month — it avoids interval issues entirely.
+  - If a golden-bucket example is provided, prefer its SQL pattern over inventing a new one.
   {examples}
   Question: {question}
 

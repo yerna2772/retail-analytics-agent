@@ -255,3 +255,86 @@ class TestTableAllowlist:
         sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES LIMIT 10"
         result = validate_sql(sql)
         assert not result.valid
+
+
+# ── Regression: CTE aliases not rejected as unknown tables (bug a) ───
+
+
+class TestCTEAliasRegression:
+    def test_with_cte_passes(self) -> None:
+        sql = "WITH x AS (SELECT id FROM orders) SELECT id FROM x LIMIT 10"
+        result = validate_sql(sql)
+        assert result.valid, f"CTE alias rejected: {result.reason}"
+
+    def test_nested_cte_passes(self) -> None:
+        sql = (
+            "WITH step1 AS (SELECT user_id, SUM(sale_price) AS spend FROM order_items "
+            "GROUP BY user_id), "
+            "step2 AS (SELECT user_id, spend FROM step1 WHERE spend > 100) "
+            "SELECT user_id, spend FROM step2 ORDER BY spend DESC LIMIT 20"
+        )
+        result = validate_sql(sql)
+        assert result.valid, f"Nested CTE rejected: {result.reason}"
+
+
+# ── Regression: COUNT(*)/COUNTIF pass, SELECT * still rejected (bug b)
+
+
+class TestCountStarRegression:
+    def test_count_star_passes(self) -> None:
+        sql = "SELECT COUNT(*) FROM orders LIMIT 10"
+        result = validate_sql(sql)
+        assert result.valid, f"COUNT(*) wrongly rejected: {result.reason}"
+
+    def test_countif_passes(self) -> None:
+        sql = "SELECT COUNTIF(status = 'Returned') FROM order_items LIMIT 10"
+        result = validate_sql(sql)
+        assert result.valid, f"COUNTIF wrongly rejected: {result.reason}"
+
+    def test_select_star_still_rejected(self) -> None:
+        sql = "SELECT * FROM users"
+        result = validate_sql(sql)
+        assert not result.valid
+        assert "SELECT *" in result.reason
+
+    def test_table_qualified_star_still_rejected(self) -> None:
+        sql = "SELECT users.* FROM users"
+        result = validate_sql(sql)
+        assert not result.valid
+
+
+# ── Regression: validate returns byte-identical SQL (bug c) ──────────
+
+
+class TestNoRewriteRegression:
+    def test_byte_identical_with_limit(self) -> None:
+        sql = (
+            "SELECT SUM(oi.sale_price) AS revenue, p.category "
+            "FROM order_items oi JOIN products p ON oi.product_id = p.id "
+            "GROUP BY p.category ORDER BY revenue DESC LIMIT 10"
+        )
+        result = validate_sql(sql)
+        assert result.valid
+        assert result.sql == sql, (
+            f"Validator rewrote the SQL.\n  Input:  {sql}\n  Output: {result.sql}"
+        )
+
+    def test_not_in_preserved(self) -> None:
+        sql = (
+            "SELECT DATE_TRUNC(oi.created_at, MONTH) AS month, "
+            "SUM(oi.sale_price) AS revenue "
+            "FROM order_items oi "
+            "WHERE oi.status NOT IN ('Cancelled', 'Returned') "
+            "GROUP BY month ORDER BY month LIMIT 36"
+        )
+        result = validate_sql(sql)
+        assert result.valid
+        assert result.sql == sql
+
+    def test_no_limit_wraps_instead_of_injecting(self) -> None:
+        sql = "SELECT id, age FROM users"
+        result = validate_sql(sql)
+        assert result.valid
+        assert result.sql.startswith("SELECT * FROM (")
+        assert sql in result.sql
+        assert str(DEFAULT_LIMIT) in result.sql

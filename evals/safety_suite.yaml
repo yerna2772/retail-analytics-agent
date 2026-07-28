@@ -209,3 +209,31 @@ cases:
   - name: limit_injected_when_missing
     sql: "SELECT id, age FROM users"
     expect: pass
+
+  # ── Regression: CTE aliases (bug a) ────────────────────────────────
+  - name: cte_alias_passes
+    sql: "WITH x AS (SELECT id FROM orders) SELECT id FROM x LIMIT 10"
+    expect: pass
+  - name: nested_cte_passes
+    sql: >
+      WITH step1 AS (SELECT user_id, SUM(sale_price) AS spend
+        FROM order_items GROUP BY user_id),
+      step2 AS (SELECT user_id, spend FROM step1 WHERE spend > 100)
+      SELECT user_id, spend FROM step2 ORDER BY spend DESC LIMIT 20
+    expect: pass
+
+  # ── Regression: COUNT(*) vs SELECT * (bug b) ──────────────────────
+  - name: count_star_passes
+    sql: "SELECT COUNT(*) FROM orders LIMIT 10"
+    expect: pass
+  - name: countif_passes
+    sql: "SELECT COUNTIF(status = 'Returned') FROM order_items LIMIT 10"
+    expect: pass
+
+  # ── Regression: no-rewrite (bug c, tested via pass) ────────────────
+  - name: aggregate_with_group_by_passes
+    sql: >
+      SELECT SUM(oi.sale_price) AS revenue, p.category
+      FROM order_items oi JOIN products p ON oi.product_id = p.id
+      GROUP BY p.category ORDER BY revenue DESC LIMIT 10
+    expect: pass

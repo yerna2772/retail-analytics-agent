@@ -156,14 +156,9 @@ def validate_sql(sql: str) -> ValidationResult:
                     sql=sql,
                 )
 
-    # --- LIMIT: present or injected ------------------------------------
-    if parsed.args.get("limit") is None:
-        parsed = parsed.limit(DEFAULT_LIMIT)
-
     # --- no CROSS JOIN without predicate -------------------------------
     for join in parsed.find_all(exp.Join):
-        join_sql = join.sql(dialect="bigquery").upper()
-        if "CROSS" in join_sql:
+        if str(join.args.get("kind", "")).upper() == "CROSS":
             has_on = join.args.get("on") is not None
             has_where = parsed.find(exp.Where) is not None
             if not has_on and not has_where:
@@ -173,4 +168,12 @@ def validate_sql(sql: str) -> ValidationResult:
                     sql=sql,
                 )
 
-    return ValidationResult(valid=True, reason="pass", sql=parsed.sql(dialect="bigquery"))
+    # --- LIMIT: check presence, but never rewrite the SQL -------------
+    has_limit = parsed.args.get("limit") is not None
+    if has_limit:
+        return ValidationResult(valid=True, reason="pass", sql=sql)
+    return ValidationResult(
+        valid=True,
+        reason="pass",
+        sql=f"SELECT * FROM ({sql}) LIMIT {DEFAULT_LIMIT}",
+    )

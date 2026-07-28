@@ -8,8 +8,9 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     openrouter_api_key: str = ""
 
-    # BigQuery
+    # GCP
     gcp_project_id: str = ""
+    gcp_location: str = "us-central1"
 
     # Postgres
     postgres_dsn: str = "postgresql://agent:agent@localhost:5432/agent"

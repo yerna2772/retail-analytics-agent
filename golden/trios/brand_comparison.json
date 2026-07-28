@@ -1,0 +1,21 @@
+{
+  "id": "brand_comparison",
+  "metrics_used": [
+    "revenue",
+    "item_return_rate"
+  ],
+  "tables_used": [
+    "order_items",
+    "products"
+  ],
+  "question_variants": [
+    "compare two brands",
+    "why does one brand outperform another",
+    "brand performance"
+  ],
+  "sql": "SELECT p.brand,\n  COUNT(*) AS items_sold,\n  ROUND(SUM(oi.sale_price), 2) AS revenue,\n  ROUND(AVG(p.retail_price), 2) AS avg_price_point,\n  ROUND(AVG(p.retail_price - p.cost), 2) AS avg_margin,\n  ROUND(100.0 * COUNTIF(oi.status = 'Returned') / COUNT(*), 2) AS return_pct\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nJOIN `bigquery-public-data.thelook_ecommerce.products` AS p ON p.id = oi.product_id\nGROUP BY p.brand ORDER BY revenue DESC",
+  "report": "A brand revenue gap has three candidate drivers: units sold, price point, and returns. Pull all three in one query so the comparison can attribute the difference instead of just stating it.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

@@ -1,6 +1,6 @@
 name: planner
 description: Decompose a question into a multi-step SQL plan
-version: "1.0"
+version: "1.2"
 owner: dev
 template: |
   You are a data analyst planning how to answer a question using SQL.
@@ -13,7 +13,19 @@ template: |
 
   Question: {question}
 
-  Break this into 1-3 SQL steps. For comparison or causal questions ("why X vs Y", "what drove the change"), plan separate queries for each segment, then a comparison.
+  Rules:
+  - Use the MINIMUM number of SQL steps. Most questions need exactly 1 step.
+  - Only split into multiple steps when the question explicitly compares two segments
+    ("why X vs Y", "how does A compare to B") or requires a result from one query
+    to parameterise another.
+  - Never add steps for tangential metrics the user did not ask about.
+  - Each step must directly contribute to answering the original question.
+  - Write each step as a simple, direct sub-question. Do NOT over-specify the SQL
+    approach — that is the SQL generator's job. For example, write "Monthly churn
+    rate over the last year" NOT "Identify which user segments by age group, gender,
+    and traffic source experienced the largest percentage increase in churn rate".
+  - For "why" questions, plan the base metric first (step 1), then a breakdown
+    by one dimension (step 2). Two steps maximum.
 
   Respond with ONLY a JSON array of steps:
   [{"index": 0, "question": "...", "depends_on": []}, ...]

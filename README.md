@@ -62,22 +62,35 @@ pip install -e ".[dev]"
 make demo
 ```
 
-Demo mode uses `FakeLLM` (keyword-aware scripted responses) and `FakeBigQuery` (CSV fixture data). No API keys, no GCP project, no network access required.
+Demo mode uses `FakeLLM` (keyword-aware scripted responses) and `FakeBigQuery` (CSV fixture data). No API keys, no GCP project, no network required.
 
-### Live mode
+### Live mode (Vertex AI + BigQuery)
 
 ```bash
 cp .env.example .env
-# Add at least one LLM key:
-#   GEMINI_API_KEY=...       (primary)
-#   OPENROUTER_API_KEY=...   (fallback)
-# Add GCP credentials for BigQuery:
-#   GCP_PROJECT_ID=...
-#   GOOGLE_APPLICATION_CREDENTIALS=path/to/key.json
+# Set your GCP project (must have Vertex AI and BigQuery APIs enabled):
+#   GCP_PROJECT_ID=my-project-id
+#   GCP_LOCATION=us-central1     (default)
+# Authenticate:
+gcloud auth application-default login
+gcloud auth application-default set-quota-project my-project-id
 make run
 ```
 
-The agent auto-detects available credentials. If no LLM keys are set, it falls back to FakeLLM.
+### Live mode (Gemini API key + DuckDB)
+
+```bash
+cp .env.example .env
+# If you don't have a GCP project, use a free Gemini key instead:
+#   GEMINI_API_KEY=...       (from https://aistudio.google.com/apikey)
+#   OPENROUTER_API_KEY=...   (fallback)
+make run
+```
+
+The agent auto-detects credentials in priority order:
+1. `GCP_PROJECT_ID` → Vertex AI (Gemini 2.5 Flash) + real BigQuery
+2. `GEMINI_API_KEY` → Gemini AI Studio + DuckDB (local SQL execution on fixtures)
+3. No credentials → FakeLLM + FakeBigQuery (demo mode)
 
 ## Example session
 
@@ -174,11 +187,12 @@ src/agent/
 ├── state.py                # AgentState TypedDict + Pydantic models
 ├── graph.py                # StateGraph wiring (18 nodes)
 ├── data/
-│   ├── bigquery.py         # BigQueryClient Protocol + FakeBigQuery
+│   ├── bigquery.py         # BigQueryClient Protocol + RealBigQuery + FakeBigQuery
+│   ├── fake_bigquery.py    # DuckDBBigQuery (sqlglot transpilation, local SQL)
 │   ├── semantic_layer.py   # Safe schema + metric definitions
 │   └── golden_bucket.py    # TF-IDF retrieval over seed trios
 ├── llm/
-│   ├── gateway.py          # LLMGateway Protocol + Gemini/OpenRouter/FakeLLM
+│   ├── gateway.py          # LLMGateway Protocol + VertexAI/Gemini/OpenRouter/FakeLLM
 │   └── circuit.py          # Circuit breaker for LLM calls
 ├── nodes/                  # One file per graph node
 │   ├── triage.py           # Intent classification
@@ -222,16 +236,16 @@ prompts/                    # Prompt templates (YAML, hot-reloadable)
 ├── persona.yaml            # owner: business (editable without code change)
 └── system.yaml
 
-golden/trios/               # 12 seed question→SQL→result trios
+golden/trios/               # 13 seed question→SQL→result trios
 semantic/metrics.yaml       # Metric definitions (revenue, AOV, etc.)
 fixtures/                   # CSV data for FakeBigQuery
-evals/safety_suite.yaml     # 45 adversarial safety eval cases
+evals/safety_suite.yaml     # 50 adversarial safety eval cases
 ```
 
 ## Testing
 
 ```bash
-make check    # lint + typecheck + 129 unit tests + 45 safety evals
+make check    # lint + typecheck + 139 unit tests + 50 safety evals
 make test     # unit tests only
 make eval     # adversarial safety suite only
 ```
@@ -244,12 +258,12 @@ Tests cover: SQL AST validation (PII, `SELECT *`, table allowlist, injection att
 
 Every external dependency is behind a Protocol with a real and a fake implementation:
 
-| Protocol | Real | Fake |
-|----------|------|------|
-| `LLMGateway` | `GeminiGateway`, `OpenRouterGateway` | `FakeLLM` |
-| `BigQueryClient` | (production impl) | `FakeBigQuery` (CSV-backed) |
-| `ReportStore` | (Postgres impl) | `FakeReportStore` (in-memory) |
-| `AuditStore` | (Postgres impl) | `FakeAuditStore` (in-memory) |
+| Protocol | Real | Local | Fake |
+|----------|------|-------|------|
+| `LLMGateway` | `VertexGateway`, `GeminiGateway`, `OpenRouterGateway` | — | `FakeLLM` |
+| `BigQueryClient` | `RealBigQuery` (BigQuery SDK) | `DuckDBBigQuery` (sqlglot transpilation) | `FakeBigQuery` (CSV pattern-matching) |
+| `ReportStore` | (Postgres impl) | — | `FakeReportStore` (in-memory) |
+| `AuditStore` | (Postgres impl) | — | `FakeAuditStore` (in-memory) |
 
 Injected via LangGraph's `config["configurable"]` dict — no global singletons, no monkey-patching.
 

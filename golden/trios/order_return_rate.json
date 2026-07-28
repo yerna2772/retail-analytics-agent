@@ -1,0 +1,19 @@
+{
+  "id": "order_return_rate",
+  "metrics_used": [
+    "order_return_rate"
+  ],
+  "tables_used": [
+    "orders"
+  ],
+  "question_variants": [
+    "order return rate",
+    "what share of orders come back",
+    "how many orders are returned"
+  ],
+  "sql": "SELECT FORMAT_TIMESTAMP('%Y-%m', o.created_at) AS month,\n  COUNT(*) AS orders,\n  ROUND(100.0 * COUNTIF(o.status = 'Returned') / COUNT(*), 2) AS order_return_rate_pct\nFROM `bigquery-public-data.thelook_ecommerce.orders` AS o\nGROUP BY month ORDER BY month",
+  "report": "Order-level return rate, distinct from the item-level metric. An order of four items with one return counts fully here and as 25% there. Always state which one is being reported.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

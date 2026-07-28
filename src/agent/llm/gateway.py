@@ -55,6 +55,55 @@ def clean_sql(text: str) -> str:
 # ---------------------------------------------------------------------------
 
 
+class VertexGateway:
+    """Gemini via Vertex AI — uses Application Default Credentials."""
+
+    def __init__(self) -> None:
+        import google.auth
+        import google.auth.transport.requests
+
+        self._credentials, default_project = google.auth.default()
+        self._project = settings.gcp_project_id or default_project
+        self._location = settings.gcp_location
+        self._model = "gemini-2.5-flash"
+        self._circuit = CircuitBreaker(name="vertex")
+        self._auth_request = google.auth.transport.requests.Request()
+
+    def _get_token(self) -> str:
+        if not self._credentials.valid:
+            self._credentials.refresh(self._auth_request)
+        return self._credentials.token
+
+    async def generate(self, prompt: str, *, system: str = "") -> str:
+        self._circuit.check()
+        url = (
+            f"https://{self._location}-aiplatform.googleapis.com/v1/"
+            f"projects/{self._project}/locations/{self._location}/"
+            f"publishers/google/models/{self._model}:generateContent"
+        )
+        contents = []
+        if system:
+            contents.append({"role": "user", "parts": [{"text": system}]})
+            contents.append({"role": "model", "parts": [{"text": "Understood."}]})
+        contents.append({"role": "user", "parts": [{"text": prompt}]})
+
+        try:
+            token = self._get_token()
+            async with httpx.AsyncClient(timeout=60) as client:
+                resp = await client.post(
+                    url,
+                    headers={"Authorization": f"Bearer {token}"},
+                    json={"contents": contents},
+                )
+                resp.raise_for_status()
+            self._circuit.record_success()
+            data = resp.json()
+            return data["candidates"][0]["content"]["parts"][0]["text"]
+        except Exception as exc:
+            self._circuit.record_failure()
+            raise RuntimeError(f"Vertex AI call failed: {exc}") from exc
+
+
 class GeminiGateway:
     def __init__(self) -> None:
         self._api_key = settings.gemini_api_key
@@ -142,7 +191,7 @@ class FakeLLM:
         combined = (system + " " + prompt).lower()
         if "intent" in combined and ("classif" in combined or "triage" in combined):
             return self._fake_triage(prompt)
-        if "break this into" in combined and "sql steps" in combined:
+        if "sql steps" in combined and ("break this into" in combined or "planning" in combined):
             return self._fake_plan(prompt)
         if "compose" in combined and "report" in combined:
             return self._fake_compose_report(prompt)
@@ -371,6 +420,9 @@ class FakeLLM:
 def get_gateway(*, fake: bool = False) -> LLMGateway:
     if fake:
         return FakeLLM()
+    if settings.gcp_project_id:
+        logger.info("Using Vertex AI gateway (project: %s)", settings.gcp_project_id)
+        return VertexGateway()
     if settings.gemini_api_key:
         logger.info("Using Gemini gateway")
         return GeminiGateway()

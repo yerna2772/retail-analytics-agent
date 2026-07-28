@@ -10,10 +10,19 @@ aov:
   filter: "oi.status NOT IN ('Cancelled', 'Returned')"
   note: "Divides total revenue by distinct order count, not by order_items rows."
 
-return_rate:
+item_return_rate:
   sql: "COUNTIF(oi.status = 'Returned') / COUNT(*)"
   filter: ""
-  note: "Denominator is all items, not just returned items."
+  note: >
+    Item-level return rate. Denominator is all items, not just returned items.
+    An order of four items with one return counts as 25% here.
+
+order_return_rate:
+  sql: "COUNTIF(o.status = 'Returned') / COUNT(*)"
+  filter: ""
+  note: >
+    Order-level return rate. An order of four items with one return counts as
+    100% here. Always state which metric is being reported.
 
 active_users:
   sql: "COUNT(DISTINCT oi.user_id)"
@@ -21,6 +30,9 @@ active_users:
   note: "Users with at least one completed order in the period."
 
 churn:
-  sql: "Users active in period A but absent in period B"
-  filter: ""
-  note: "Requires window functions comparing consecutive periods."
+  sql: "Users active in month M with no orders in month M+1"
+  filter: "oi.status NOT IN ('Cancelled', 'Returned')"
+  note: >
+    Compare distinct user sets between consecutive months via a self-join
+    on monthly_active. A user who returns in M+2 still counts as churned
+    in M. Do not confuse with reduced spending — churn means zero orders.

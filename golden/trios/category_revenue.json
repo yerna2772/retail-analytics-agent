@@ -1,15 +1,21 @@
 {
-  "id": "trio-category-revenue",
-  "question_variants": [
-    "Revenue by category",
-    "Which categories sell the most?",
-    "Top product categories by revenue",
-    "Category performance"
+  "id": "category_revenue",
+  "metrics_used": [
+    "revenue"
   ],
-  "sql": "SELECT p.category, SUM(oi.sale_price) AS revenue FROM products p JOIN order_items oi ON p.id = oi.product_id WHERE oi.status NOT IN ('Cancelled', 'Returned') GROUP BY p.category ORDER BY revenue DESC LIMIT 20",
-  "report": "Revenue by product category, showing which categories drive the most sales.",
-  "tables_used": ["products", "order_items"],
-  "metrics_used": ["revenue"],
-  "quality_score": 1.0,
-  "provenance": "authored"
+  "tables_used": [
+    "order_items",
+    "products"
+  ],
+  "question_variants": [
+    "revenue by category",
+    "which categories sell best",
+    "category performance",
+    "top product categories"
+  ],
+  "sql": "SELECT p.category, p.department,\n  COUNT(*) AS items_sold,\n  ROUND(SUM(oi.sale_price), 2) AS revenue\nFROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\nJOIN `bigquery-public-data.thelook_ecommerce.products` AS p ON p.id = oi.product_id\nWHERE oi.status NOT IN ('Cancelled', 'Returned')\nGROUP BY p.category, p.department ORDER BY revenue DESC",
+  "report": "Category split by department, because the same category name behaves differently across Men and Women lines and a combined figure hides that.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
 }

@@ -17,7 +17,9 @@ async def _chat_loop(fake: bool) -> None:
     from langchain_core.messages import HumanMessage
     from langgraph.checkpoint.memory import MemorySaver
 
-    from agent.data.bigquery import FakeBigQuery
+    from agent.config import settings as cfg
+    from agent.data.bigquery import FakeBigQuery, RealBigQuery
+    from agent.data.fake_bigquery import DuckDBBigQuery
     from agent.graph import build_graph
     from agent.llm.gateway import get_gateway
     from agent.store.audit import FakeAuditStore
@@ -26,10 +28,18 @@ async def _chat_loop(fake: bool) -> None:
     checkpointer = MemorySaver()
     graph = build_graph(checkpointer)
     thread_id = uuid.uuid4().hex[:12]
-    mode = "FakeLLM (demo)" if fake else "Live"
 
     llm = get_gateway(fake=fake)
-    bq = FakeBigQuery()
+
+    if fake:
+        mode = "FakeLLM (demo)"
+        bq = FakeBigQuery()
+    elif cfg.gcp_project_id:
+        mode = f"Vertex AI + BigQuery ({cfg.gcp_project_id})"
+        bq = RealBigQuery(project=cfg.gcp_project_id)
+    else:
+        mode = "Gemini + DuckDB"
+        bq = DuckDBBigQuery()
     report_store = FakeReportStore()
     audit_store = FakeAuditStore()
 
@@ -97,7 +107,7 @@ def main(ctx: typer.Context) -> None:
 def _detect_and_run() -> None:
     from agent.config import settings
 
-    fake = not (settings.gemini_api_key or settings.openrouter_api_key)
+    fake = not (settings.gcp_project_id or settings.gemini_api_key or settings.openrouter_api_key)
     asyncio.run(_chat_loop(fake))
 
 

@@ -1,0 +1,21 @@
+{
+  "id": "churn_rate",
+  "metrics_used": [
+    "churn"
+  ],
+  "tables_used": [
+    "order_items"
+  ],
+  "question_variants": [
+    "churn rate",
+    "why did churn spike",
+    "how many customers are we losing",
+    "customer retention by month",
+    "monthly churn trend"
+  ],
+  "sql": "WITH monthly_active AS (\n  SELECT DISTINCT oi.user_id, FORMAT_TIMESTAMP('%Y-%m', oi.created_at) AS month\n  FROM `bigquery-public-data.thelook_ecommerce.order_items` AS oi\n  WHERE oi.status NOT IN ('Cancelled', 'Returned')\n),\nmonth_pairs AS (\n  SELECT m1.month AS current_month,\n    MIN(m2.month) AS next_month\n  FROM (SELECT DISTINCT month FROM monthly_active) m1\n  JOIN (SELECT DISTINCT month FROM monthly_active) m2 ON m2.month > m1.month\n  GROUP BY m1.month\n)\nSELECT mp.current_month AS month,\n  COUNT(DISTINCT a.user_id) AS active_users,\n  COUNT(DISTINCT CASE WHEN b.user_id IS NULL THEN a.user_id END) AS churned,\n  ROUND(100.0 * COUNT(DISTINCT CASE WHEN b.user_id IS NULL THEN a.user_id END) / NULLIF(COUNT(DISTINCT a.user_id), 0), 2) AS churn_rate_pct\nFROM month_pairs mp\nJOIN monthly_active a ON a.month = mp.current_month\nLEFT JOIN monthly_active b ON b.user_id = a.user_id AND b.month = mp.next_month\nGROUP BY mp.current_month\nORDER BY mp.current_month",
+  "report": "Churn rate is the percentage of active users in month M who placed no orders in month M+1. A user who returns in M+2 still counts as churned in M. Always distinguish churn from low activity — a user who buys less is not churned until they stop entirely.",
+  "quality_score": 0.9,
+  "provenance": "authored",
+  "supersedes": null
+}

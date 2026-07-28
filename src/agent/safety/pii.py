@@ -32,7 +32,7 @@ def is_pii_column_name(column: str) -> bool:
 
 _EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 _PHONE_RE = re.compile(r"\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b")
-_POSTAL_RE = re.compile(r"\b\d{5}(?:-\d{4})?\b")
+_POSTAL_RE = re.compile(r"(?<=,\s[A-Z]{2}\s)\d{5}(?:-\d{4})?\b")
 _STREET_RE = re.compile(
     r"\b\d+\s+(?:[A-Za-z]+\s+){1,3}"
     r"(?:St|Street|Ave|Avenue|Blvd|Boulevard|Dr|Drive|Ln|Lane|Rd|Road|"

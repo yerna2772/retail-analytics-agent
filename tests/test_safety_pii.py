@@ -71,9 +71,14 @@ class TestOutputScrubber:
         assert "[REDACTED]" in result
 
     def test_scrubs_postal_code(self) -> None:
-        text = "Warehouse zone 90210 ships fastest"
+        text = "Ships from Beverly Hills, CA 90210"
         result = scrub_output(text)
         assert "90210" not in result
+
+    def test_numeric_id_not_scrubbed_as_postal(self) -> None:
+        text = "User ID 10345 spent $200"
+        result = scrub_output(text)
+        assert result == text
 
     def test_clean_text_unchanged(self) -> None:
         text = "Revenue was $1.2M across 15 categories in Q4"
