@@ -20,3 +20,6 @@ htmlcov/
 *.log
 .DS_Store
 outputs/
+CLAUDE.md
+TZ_TRACEABILITY.md
+TEST_CASES.md

@@ -284,25 +284,25 @@ The graph-based architecture makes the agent extensible without modifying existi
 - **Web search**: add a `web_search` node as an alternative to `sql_generator` for questions outside the dataset scope. Route from `planner` based on question type.
 - **New data sources**: implement the `BigQueryClient` Protocol for the new source. The SQL validator and executor work through the same interface. Add tables to `ALLOWED_TABLES` and `TABLE_SCHEMA` in `ast_rules.py`.
 
+## Requirements coverage
+
+Each requirement from the assignment is addressed below. Full design rationale, diagrams, and production considerations are in [ARCHITECTURE.md](ARCHITECTURE.md) (sections §4.1–§4.8).
+
+| # | Requirement | Prototype | Design | Key files |
+|---|-------------|-----------|--------|-----------|
+| 1 | **Hybrid Intelligence** | 13 seed trios with TF-IDF retrieval. SQL generator receives relevant golden examples as few-shot context. | pgvector embeddings at scale, human-gated promotion pipeline for new trios. [§4.1](ARCHITECTURE.md) | `data/golden_bucket.py`, `golden/trios/`, `semantic/metrics.yaml` |
+| 2 | **Safety & PII Masking** | Three deterministic layers: AST validation (sqlglot), column denylist, output scrubbing. Never prompted. | Cloud DLP for unstructured text, row-level security. [§4.2](ARCHITECTURE.md) | `safety/ast_rules.py`, `safety/pii.py`, `nodes/guardrail_out.py` |
+| 3 | **High-Stakes Oversight** | Resolve targets before confirmation, soft-delete with audit trail, ownership filter in code. | `interrupt()` for real user confirmation, risk-tiered UX. [§4.3](ARCHITECTURE.md) | `nodes/reports/resolve.py`, `confirm.py`, `delete.py` |
+| 4 | **Continuous Improvement** | Persona preferences in YAML. | User preference store (Postgres), system-level trio promotion from high-scoring interactions. [§4.4](ARCHITECTURE.md) | `prompts/persona.yaml`, `store/` |
+| 5 | **Resilience** | Five-level degradation: repair → diagnose → replan → degrade → error state. Bounded budgets per turn. | Circuit breaker, Gemini → OpenRouter fallback. [§4.5](ARCHITECTURE.md) | `nodes/repair.py`, `nodes/degrade.py`, `llm/circuit.py` |
+| 6 | **Quality Assurance** | 50 adversarial safety evals (100% gate), 139 unit tests, `make check` CI pipeline. | Groundedness judge (10%/100%), offline metric suite, human review workflow. [§4.6](ARCHITECTURE.md) | `evals/safety_suite.yaml`, `tests/` |
+| 7 | **Observability** | Trace IDs on every error, structured logging, per-turn metrics in graph state. | Langfuse traces with span-level cost, Grafana dashboards, alerting. [§4.7](ARCHITECTURE.md) | `observability/tracing.py`, `config.py` |
+| 8 | **Persona Management** | YAML prompts with 60s TTL hot-reload. `owner: business` prompts editable without code changes. | Langfuse Prompt Management with labelled versions. [§4.8](ARCHITECTURE.md) | `prompts/persona.yaml`, `prompts/registry.py` |
+
 ## Known limitations
 
-- **Semantic correctness**: `dry_run` validates SQL syntax and permissions but not whether the query answers the question correctly. A syntactically valid but semantically wrong query passes validation. This is the dominant text-to-SQL failure mode and is mitigated but not solved by golden trios.
-- **PII Layer 2 (k-anonymity)**: implemented but cannot be demonstrated on the public `thelook_ecommerce` dataset, which has no real PII.
-- **Golden Bucket scale**: TF-IDF cosine similarity is appropriate for the current 12-trio corpus. At scale (1000+ trios), this should be replaced with pgvector embeddings.
-- **Cold start**: the golden bucket only contains hand-authored seed trios. A production system would backfill from existing dashboard SQL, dbt models, and analyst write-ups.
-- **Circuit breaker**: implemented for LLM calls but not configurable per-model. The fallback from Gemini → OpenRouter is at the gateway factory level.
-
-## Requirements traceability
-
-| Requirement | Implementation | Files |
-|-------------|----------------|-------|
-| Natural language → SQL | Triage → Plan → Generate → Validate → Execute | `nodes/triage.py` → `nodes/sql_generator.py` → `nodes/executor.py` |
-| PII protection (deterministic) | Column denylist + AST check + output scrubbing | `safety/pii.py`, `safety/ast_rules.py`, `nodes/guardrail_out.py` |
-| No `SELECT *` | AST rule, always enforced | `safety/ast_rules.py:99` |
-| Bounded budgets | 3 repairs / 8 LLM calls / 15 GB scanned | `config.py`, `nodes/repair.py`, `nodes/executor.py` |
-| Report creation | Compose → Save with structured output | `nodes/reports/compose.py`, `nodes/reports/save.py` |
-| Safe deletion | Resolve → Confirm → Soft delete + audit | `nodes/reports/resolve.py` → `delete.py` |
-| Graceful degradation | Five-level ladder | `nodes/degrade.py`, `nodes/repair.py`, `nodes/diagnose.py` |
-| Prompt management | YAML files with TTL hot-reload | `prompts/`, `prompts/registry.py` |
-| Golden bucket | TF-IDF retrieval over seed trios | `data/golden_bucket.py`, `golden/trios/` |
-| Semantic layer | Metric definitions + safe schema | `data/semantic_layer.py`, `semantic/metrics.yaml` |
+- **Golden Bucket scale**: TF-IDF works for the 13-trio seed corpus. At 1000+ trios, replace with pgvector embeddings.
+- **Semantic correctness**: `dry_run` validates syntax but not whether the query answers the question correctly. Mitigated by golden trios, not solved.
+- **User preferences**: the persona YAML is per-deployment, not per-user. Production would store preferences in Postgres per user ID.
+- **Confirmation flow**: the prototype auto-confirms low-risk single deletions. Production would use `interrupt()` for real user confirmation.
+- **Circuit breaker**: implemented for LLM calls but not configurable per-model.

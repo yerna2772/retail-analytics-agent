@@ -1,6 +1,6 @@
 # Implementation Plan
 
-Build order for the retail analytics agent. Steps are sequential; each ends in a working, committable state. Obligation IDs in brackets refer to `TZ_TRACEABILITY.md`.
+Build order for the retail analytics agent. Steps are sequential; each ends in a working, committable state. Obligation IDs in brackets refer to the assignment requirements.
 
 ## Scope
 
