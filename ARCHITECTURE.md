@@ -116,7 +116,7 @@ flowchart TB
 ```mermaid
 flowchart TD
     START([User turn]) --> IN["Input Guardrail<br/>intent classify + injection check"]
-    IN -->|off-topic / jailbreak| REFUSE["Scoped refusal"]
+    IN -->|"off-topic, jailbreak"| REFUSE["Scoped refusal"]
     IN -->|schema question| META["Metadata Answer<br/>from Semantic Layer"]
     IN -->|report ops| RESOLVE
     IN -->|analysis| CTX
@@ -203,7 +203,7 @@ sequenceDiagram
     U->>A: question
     A->>LF: trace start, thread_id + user_id
     A->>L: intent classification
-    L-->>A: analysis / comparative
+    L-->>A: analysis, comparative
     A->>GB: hybrid retrieve, k=4
     GB-->>A: 3 trios: state-level AOV comparison,<br/>cohort spend, category mix
     A->>SEM: schema slice + metric defs
@@ -257,7 +257,7 @@ Retrieved trios enter the SQL generator as few-shot examples and the analyst nod
 
 ```mermaid
 flowchart LR
-    INT["Successful interaction"] --> SIG{"Positive signal?<br/>saved / thumbs up /<br/>no correction next turn"}
+    INT["Successful interaction"] --> SIG{"Positive signal?<br/>saved, thumbs up,<br/>no correction next turn"}
     SIG -->|no| DROP["Discard"]
     SIG -->|yes| CAND["Candidate trio<br/>status = candidate"]
 
@@ -289,7 +289,7 @@ Three independent layers. Any one failing does not produce a leak.
 
 ```mermaid
 flowchart TB
-    Q["User question"] --> G1["Layer 0 — Intent Guardrail<br/>analysis / metadata / report-ops only"]
+    Q["User question"] --> G1["Layer 0 — Intent Guardrail<br/>analysis, metadata, report-ops only"]
     G1 --> GEN["SQL generation"]
     GEN --> G2["Layer 1 — AST Validator<br/>deterministic"]
     G2 --> BQL["Layer 2 — BigQuery<br/>column-level ACL + policy tags"]

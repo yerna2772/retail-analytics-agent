@@ -8,15 +8,15 @@ Built with LangGraph (explicit state graph, no black-box agents), Gemini 2.5 Fla
 
 ```mermaid
 graph TD
-    START --> triage
-    triage -->|analysis / report_create| context
+    S((Start)) --> triage
+    triage -->|"analysis, report_create"| context
     triage -->|metadata| metadata
     triage -->|report_delete| resolve_targets
     triage -->|refuse| guardrail_out
 
     context --> planner
     planner -->|query| sql_generator
-    planner -->|compose_from_history| analyst
+    planner -->|from history| analyst
 
     sql_generator --> sql_validator
     sql_validator -->|execute| executor
@@ -28,7 +28,7 @@ graph TD
     executor -->|degrade| degrade
 
     repair -->|retry| sql_generator
-    repair -->|give_up| degrade
+    repair -->|give up| degrade
     diagnose --> sql_generator
 
     replan -->|more| sql_generator
@@ -46,7 +46,7 @@ graph TD
 
     metadata --> guardrail_out
     degrade --> guardrail_out
-    guardrail_out --> END
+    guardrail_out --> E((End))
 ```
 
 **18 nodes, one directed graph, fully explicit state transitions.** Every LLM call, query result, and routing decision is visible in the graph state. See [ARCHITECTURE.md](ARCHITECTURE.md) for design rationale.
